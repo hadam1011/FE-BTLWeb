@@ -8,7 +8,7 @@ const Comment = ({ comment, setStar }) => {
     const [book, setBook] = useState({});
 
     const getBook = async () => {
-        const response = await fetch(`http://localhost:8080/book/${comment.bookid}`)
+        const response = await fetch(`http://localhost:8080/books/${comment.bookid}`)
         let data = await response.json();
         setBook(data);
     }

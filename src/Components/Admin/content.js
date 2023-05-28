@@ -122,13 +122,17 @@ const ContentPages = ({ setBook, setDisabled }) => {
                 justifyContent: 'space-between',
                 margin: '1em 0'
             }}>
-                <Button
-                    type="primary"
-                    onClick={handleAddBook}
-                    disabled={!isLogin}
+                <Popconfirm
+                    title="Bạn muốn thêm mới sách"
+                    onConfirm={handleAddBook}
                 >
-                    Add Book
-                </Button>
+                    <Button
+                        type="primary"
+                        disabled={!isLogin}
+                    >
+                        Add Book
+                    </Button>
+                </Popconfirm>
                 <Input.Search 
                     style={{ width: '20%' }}
                     onChange={handleSearch}

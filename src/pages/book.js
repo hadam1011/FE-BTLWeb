@@ -8,7 +8,7 @@ const Book = ({ book, disabled }) => {
     const [selectValue, setSelectValue] = useState(book.category);
     const [avatar, setImgUrl] = useState(book.avatar);
     const [isEdit, setIsEdit] = useState(false);
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(book.establish);
     const [api, contextHolder] = notification.useNotification();
     const navigate = useNavigate();
     const dateFormat = 'YYYY/MM/DD';

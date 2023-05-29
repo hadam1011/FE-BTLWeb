@@ -167,7 +167,7 @@ const BookDetail = () => {
                     <Typography.Title style={{margin: '0'}}>
                         {book.title}
                     </Typography.Title>
-                    <div style={{marginBottom: '2em'}}>
+                    <div style={{marginBottom: '1em'}}>
                         <Space size="small">
                             <Rate disabled value={star} />
                             <span style={{border: '1px solid gray'}}/>
@@ -175,6 +175,15 @@ const BookDetail = () => {
                                 {`Số lượng đã bán: ${book.sold}`}
                             </Typography.Text>
                         </Space>
+                    </div>
+                    <div>
+                        <Typography.Text
+                            style={{
+                                fontSize: '3.5em'
+                            }}
+                        >
+                            10,000đ
+                        </Typography.Text>
                     </div>
                     <div style={{marginBottom: '1em'}}> 
                         <Typography.Text>Số lượng </Typography.Text>    

@@ -13,7 +13,7 @@ const ContentPages = ({ setBook, setDisabled }) => {
         const response = await fetch('http://localhost:8080/books');
         let data = await response.json();
         setListBook(data);
-        setListSearch(listBook);
+        setListSearch(data);
     }
 
     useEffect(() => {

@@ -1,19 +1,24 @@
 import { Menu, Modal } from 'antd';
 import { useState } from 'react';
-import { HomeOutlined, LoginOutlined, LogoutOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import { BookOutlined, LoginOutlined, LogoutOutlined, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
-    const [current, setCurrent] = useState('home');
+    const [current, setCurrent] = useState('book');
     const navigate = useNavigate();
     const [modal, contextHolder] = Modal.useModal();
     const isLogin = JSON.parse(localStorage.getItem("user")) !== null;
 
     const items = [
     {
-        label: 'Home',
-        key: 'home',
-        icon: <HomeOutlined />
+        label: 'Book Management',
+        key: 'book',
+        icon: <BookOutlined />
+    },
+    {
+        label: 'Account Management',
+        key: 'account',
+        icon: <UserOutlined />
     },
     {
         label: isLogin ? 'Logout' : 'Login',
@@ -24,7 +29,7 @@ const NavBar = () => {
 
     const handleClick = (e) => {
         setCurrent(e.key);
-        if (e.key === 'home') {
+        if (e.key === 'book') {
             navigate('/admin');
         } else if (e.key === 'login') {
             navigate('/login');
@@ -38,6 +43,8 @@ const NavBar = () => {
                     navigate("/admin");
                 },
               });
+        } else if (e.key === 'account') {
+            navigate('/admin/accounts');
         }
     }
 

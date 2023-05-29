@@ -55,7 +55,6 @@ const ContentPages = ({ setBook, setDisabled }) => {
         const keyword = e.target.value.toLowerCase();
 
         if (keyword.length === 0) callApi();
-        console.log(keyword);
 
         const newList = listSearch.filter((book) => {
             return book.title.toLowerCase().includes(keyword)

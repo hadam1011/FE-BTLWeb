@@ -7,6 +7,7 @@ import Register from "../pages/register";
 import UserHomePage from "../pages/userHomePage";
 import BookDetail from "../pages/bookDetail";
 import Cart from "../pages/cart";
+import Accounts from "../pages/accounts";
 
 const RouterPages = () => {
     const [book, setBook] = useState({});
@@ -23,6 +24,7 @@ const RouterPages = () => {
                 <Route path="/register" element={<Register /> } />
                 <Route path='/admin' element={<AdminHomePage setBook={setBook} setDisabled={setDisabled} />} >
                     <Route path='/admin/book' element={<Book book={book} disabled={disabled} />} />
+                    <Route path='/admin/accounts' element={<Accounts />} />
                 </Route>
             </Routes>
         </Router>

@@ -6,12 +6,12 @@ import dayjs from 'dayjs';
 
 const NavBar = ({ setBookList }) => {
     const user = JSON.parse(window.localStorage.getItem('user'));
+    const navigate = useNavigate();
     const [current, setCurrent] = useState('home');
     const [bookData, setBookData] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
-    const [date, setDate] = useState(user.dob);
+    const [date, setDate] = useState(user === null ? '' : user.dob);
     const [form] = Form.useForm();
-    const navigate = useNavigate();
     const [modal, contextHolder] = Modal.useModal();
     const [api, apiContextHolder] = notification.useNotification();
     const dateFormat = 'YYYY/MM/DD';
@@ -167,14 +167,14 @@ const NavBar = ({ setBookList }) => {
                                 message: "Không được để trống",
                             },
                         ]}
-                        initialValue={user.username}
+                        initialValue={user === null ? '' : user.username}
                     >
                         <Input />
                     </Form.Item>
                     <Form.Item
                         label="Mật khẩu: "
                         name="password"
-                        initialValue={user.password}
+                        initialValue={user === null ? '' : user.password}
                         rules={[
                             {
                                 required: true,
@@ -187,7 +187,7 @@ const NavBar = ({ setBookList }) => {
                     <Form.Item
                         label="Email: "
                         name="email"
-                        initialValue={user.email}
+                        initialValue={user === null ? '' : user.email}
                         rules={[
                             {
                                 required: true,
@@ -200,7 +200,7 @@ const NavBar = ({ setBookList }) => {
                     <Form.Item
                         label="Ngày sinh: "
                         name="dob"
-                        initialValue={user.dob === undefined ? null : dayjs(user.dob)}
+                        initialValue={user === null ? '' : user.dob === undefined ? null : dayjs(user.dob)}
                         rules={[
                             {
                                 required: true,

@@ -13,10 +13,6 @@ const UserHomePage = () => {
     const user = JSON.parse(window.localStorage.getItem('user'));
     const render = JSON.parse(window.localStorage.getItem('re-render'));
 
-    if (user === null) {
-        navigate('/login');
-    }
-
     const callApi = async () => {
         const response = await fetch('http://localhost:8080/books');
         let data = await response.json();
@@ -30,6 +26,9 @@ const UserHomePage = () => {
 
     useEffect(() => {
         callApi();
+        if (user === null) {
+            navigate('/login');
+        }
     }, [])
 
     return (

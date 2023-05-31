@@ -111,7 +111,7 @@ const NavBar = ({ setBookList }) => {
             username: data.username,
             password: data.password,
             dob: date,
-            role: 'user',
+            role: data.user === 'user' ? 'user' : 'manager',
             email: data.email
         }
 

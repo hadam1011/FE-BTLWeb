@@ -6,12 +6,12 @@ import Comment from "../Components/User/comment";
 const BookDetail = () => {
     const book = JSON.parse(window.localStorage.getItem('book'));
     const user = JSON.parse(window.localStorage.getItem('user'));
-    const render = JSON.parse(window.localStorage.getItem('render'));
     const [api, contextHolder] = notification.useNotification();
     const [count, setCount] = useState(1);
     const [rate, setRate] = useState(5);
     const [star, setStar] = useState(Math.floor(book.star / book.comment));
     const [commentList, setCommentList] = useState([]);
+    const render = JSON.parse(window.localStorage.getItem('render'));
 
     const callApi = async () => {
         const response = await fetch('http://localhost:8080/comments');
@@ -19,14 +19,14 @@ const BookDetail = () => {
         setCommentList(data);
         window.localStorage.removeItem('render');
     }
-    
-    useEffect(() => {
-        callApi();
-    }, [])
 
     if (render !== null) {
         callApi();
     }
+
+    useEffect(() => {
+        callApi();
+    }, [])
 
     const handleRate = (e) => {
         setRate(e);
@@ -42,6 +42,7 @@ const BookDetail = () => {
         }
 
         const newBook = {
+            bookcode: book.bookcode,
             title: book.title,
             author: book.author,
             category: book.category,
@@ -75,7 +76,8 @@ const BookDetail = () => {
             const responseUpdate = await fetch(`http://localhost:8080/book/${book.bookcode}`, optionUpdate);
             await callApi();    
             setStar(Math.floor(newBook.star / newBook.comment));
-            window.localStorage.setItem('re-render', JSON.stringify({check : true}));
+            window.localStorage.setItem('re-render', JSON.stringify({ check: true }));
+            window.localStorage.setItem('book', JSON.stringify(newBook));
         }
         fetchCreate();
     }

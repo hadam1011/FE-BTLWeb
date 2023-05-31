@@ -1,17 +1,10 @@
 import { Divider, Row, Col, Avatar, Typography, Rate, Popconfirm, notification } from "antd";
-import { useState } from "react";
 import { UserOutlined  } from "@ant-design/icons"
 
 const Comment = ({ comment, setStar }) => {
+    const book = JSON.parse(window.localStorage.getItem('book'));
     const user = JSON.parse(window.localStorage.getItem('user'));
     const [api, contextHolder] = notification.useNotification();
-    const [book, setBook] = useState({});
-
-    const getBook = async () => {
-        const response = await fetch(`http://localhost:8080/books/${comment.bookid}`)
-        let data = await response.json();
-        setBook(data);
-    }
 
     const handleDeleteComment = () => {
         var options = {
@@ -23,8 +16,7 @@ const Comment = ({ comment, setStar }) => {
 
         const fetchDelete = async () => {
             const response = await fetch(`http://localhost:8080/comment/${comment.commentid}`, options);
-            await getBook();
-            setStar(Math.floor(book.star / book.comment));
+            setStar(Math.floor((book.star - comment.star) / (book.comment - 1)));
             window.localStorage.setItem('render', JSON.stringify({ check: true }));
             api["success"]({
                 message: "Thành công",

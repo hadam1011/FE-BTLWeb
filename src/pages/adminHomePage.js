@@ -1,12 +1,21 @@
 import { Layout } from 'antd'
-import { useLocation, Outlet } from 'react-router-dom'
+import { useLocation, Outlet, useNavigate } from 'react-router-dom'
 import NavBar from '../Components/Admin/navBar'
 import ContentPages from '../Components/Admin/content'
+import { useEffect } from 'react'
 
 const {Header, Content, Footer} = Layout
 
 const AdminHomePage = ({ setBook, setDisabled }) => {
     let location = useLocation();
+    const navigate = useNavigate();
+    const user = JSON.parse(window.localStorage.getItem('user'));
+
+    useEffect(() => {
+        if (user.role === 'user') {
+            navigate('/');
+        }
+    })
 
     return (
         <div>

@@ -11,16 +11,18 @@ const UserHomePage = () => {
     const navigate = useNavigate();
     const [bookList, setBookList] = useState([]);
     const user = JSON.parse(window.localStorage.getItem('user'));
-    const render = JSON.parse(window.localStorage.getItem('re-render'));
+    const reRender = JSON.parse(window.localStorage.getItem('re-render'));
+    const render = JSON.parse(window.localStorage.getItem('render'));
 
     const callApi = async () => {
         const response = await fetch('http://localhost:8080/books');
         let data = await response.json();
         setBookList(data);
         window.localStorage.removeItem('re-render');
+        window.localStorage.removeItem('render');
     }
 
-    if (render !== null) {
+    if (render !== null || reRender !== null) {
         callApi();
     }
 

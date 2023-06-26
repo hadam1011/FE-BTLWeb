@@ -12,10 +12,12 @@ const AdminHomePage = ({ setBook, setDisabled }) => {
     const user = JSON.parse(window.localStorage.getItem('user'));
 
     useEffect(() => {
-        if (user.role === 'user') {
+        if (user === null) {
+            navigate('/login');
+        } else if (user.role === 'user') {
             navigate('/');
         }
-    })
+    }, [])
 
     return (
         <div>

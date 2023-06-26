@@ -1,5 +1,6 @@
 import { Button, Popconfirm, Table, notification, Modal, Form, Input, DatePicker, Select} from "antd";
 import { useEffect, useState } from "react";
+import * as userService from "../services/userServices"
 
 const Accounts = () => {
     const [userList, setUserList] = useState([]);
@@ -9,10 +10,9 @@ const Accounts = () => {
     const [form] = Form.useForm();
     const isLogin = JSON.parse(localStorage.getItem("user")) !== null;
     const dateFormat = 'YYYY/MM/DD';
-
+    
     const callApi = async () => {
-        const response = await fetch('http://localhost:8080/users');
-        let data = await response.json();
+        const data = userService.getAllUser();
         setUserList(data);
     }
 
@@ -21,15 +21,8 @@ const Accounts = () => {
     }, []);
 
     const handleDelete = (record) => {
-        var options = {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-        };
-
         const fetchDelete = async () => {
-            const response = await fetch(`http://localhost:8080/user/${record.id}`, options);
+            await userService.deleteUser(record.id);
             await callApi();
             api["success"]({
                 message: "Thành công",
@@ -91,21 +84,13 @@ const Accounts = () => {
             dob: date
         }
 
-        var options = {
-            method: "POST" ,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        };
-
         const fetchCreate = async () => {
-            const response = await fetch('http://localhost:8080/user', options);
+            const response = await userService.createUser(data);
             api["success"]({
                 message: "Thành công",
                 description: "Thêm tài khoản thành công",
             });
-            await callApi();
+            setUserList([...userList, response]);
         }
         fetchCreate();
     }

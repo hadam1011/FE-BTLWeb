@@ -2,9 +2,12 @@ import { Col, Row, Typography, Form, Input, Button, InputNumber, Space, Select, 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import * as bookService from '../services/bookServices';
+import * as categoryService from '../services/categoryServices';
 
 const Book = ({ book, disabled }) => {
     const [bookList, setBookList] = useState([]);
+    const [categoryList, setCategoryList] = useState([]);
     const [selectValue, setSelectValue] = useState(book.category);
     const [avatar, setImgUrl] = useState(book.avatar);
     const [isEdit, setIsEdit] = useState(false);
@@ -13,56 +16,20 @@ const Book = ({ book, disabled }) => {
     const navigate = useNavigate();
     const dateFormat = 'YYYY/MM/DD';
 
-    const selectOptions = [
-        {
-            value: 'Truyện',
-            lable: 'Truyện'
-        },
-        {
-            value: 'Truyện tranh',
-            lable: 'Truyện tranh'
-        },
-        {
-            value: 'Tiểu thuyết',
-            lable: 'Tiểu thuyết'
-        },
-        {
-            value: 'Kỹ năng',
-            lable: 'Kỹ năng'
-        },
-        {
-            value: 'Trinh Thám',
-            lable: 'Trinh Thám'
-        },
-        {
-            value: 'Khoa Học',
-            lable: 'Khoa Học'
-        },
-        {
-            value: 'Viễn Tưởng',
-            lable: 'Viễn Tưởng'
-        },
-        {
-            value: 'Sách giáo khoa',
-            lable: 'Sách giáo khoa'
-        },
-        {
-            value: 'Sách tham khảo',
-            lable: 'Sách tham khảo'
-        },
-        {
-            value: 'Sách Self-help',
-            lable: 'Sách Self-help'
-        },
-    ]
-
-    const callApi = async () => {
-        const response = await fetch('http://localhost:8080/books');
-        let data = await response.json();
-        setBookList(data);
-    }
-
     useEffect(() => {
+        const callApi = async () => {
+            const bookResponse = await bookService.getAllBook();
+            const categoryResponse = await categoryService.getAllCategory();
+
+            const categories = categoryResponse.map((category) => {
+                return {
+                    value: category.category,
+                }
+            })
+            
+            setCategoryList(categories);
+            setBookList(bookResponse);
+        }
         callApi();
     }, [])
 
@@ -91,28 +58,19 @@ const Book = ({ book, disabled }) => {
             totalpage: data.totalpage,
             category: data.category,
             sold: data.sold,
-            avatar: avatar
+            avatar: avatar,
+            remain: data.remain,
+            price: data.price
         }
 
-        var options = {
-            method: "POST" ,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bookData),
-        };
-
-        let checkExist = false;
-        bookList.forEach((book) => {
-            if (book.title.toLowerCase() === data.title.toLowerCase() &&
-                book.author.toLowerCase() === data.author.toLowerCase()) {
-                checkExist = true;
-            }    
+        let checkExist = bookList.some((book) => {
+            return book.title.toLowerCase() === data.title.toLowerCase() &&
+                book.author.toLowerCase() === data.author.toLowerCase()
         })
 
         if (!checkExist) {
             const fetchCreate = async () => {
-                const response = await fetch('http://localhost:8080/book', options);
+                await bookService.createBook(bookData);
                 api["success"]({
                     message: "Thành công",
                     description: "Thêm sách thành công",
@@ -122,6 +80,7 @@ const Book = ({ book, disabled }) => {
                 }, 2000);
             }
             fetchCreate();
+
         } else {
             api["error"]({
                 message: "Lỗi",
@@ -143,19 +102,13 @@ const Book = ({ book, disabled }) => {
             totalpage: document.getElementById('totalpage').value,
             category: selectValue,
             sold: document.getElementById('sold').value,
-            avatar: avatar
+            avatar: avatar,
+            price: parseInt(document.getElementById('price').value.replace(",", ""), 10),
+            remain: document.getElementById('remain').value
         }
 
-        var options = {
-            method: "PUT" ,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        };
-
         const fetchUpdate = async () => {
-            const response = await fetch(`http://localhost:8080/book/${book.bookcode}`, options);
+            await bookService.updateBook(book.bookcode, data);
             api["success"]({
                 message: "Thành công",
                 description: "Sửa thông tin thành công",
@@ -279,13 +232,57 @@ const Book = ({ book, disabled }) => {
                                 }
                               ]}
                         >
-                            <Select onChange={(value) => setSelectValue(value)} options={selectOptions} style={{maxWidth: '15rem'}} disabled={!isEdit && !disabled}/>
+                            <Select
+                                onChange={(value) => setSelectValue(value)}
+                                options={categoryList}
+                                style={{ maxWidth: '15rem' }}
+                                disabled={!isEdit && !disabled}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={6}>
                         <Form.Item
                             label="Số lượng đã bán:"
-                            name="sold" initialValue={book.sold}
+                            name="sold"
+                            initialValue={book.sold}
+                            rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống",
+                                }
+                              ]}
+                        >
+                            <InputNumber style={{minWidth: '15rem'}} disabled={!isEdit && !disabled}/>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={6}>
+                        <Form.Item
+                            label="Giá bán:"
+                            name="price"
+                            initialValue={book.price}
+                            rules={[
+                                {
+                                  required: true,
+                                  message: "Không được để trống",
+                                }
+                              ]}
+                        >
+                            <InputNumber
+                                style={{ minWidth: '15rem' }}
+                                disabled={!isEdit && !disabled}
+                                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+                                addonAfter="vnđ"
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                        <Form.Item
+                            label="Số lượng còn lại:"
+                            name="remain"
+                            initialValue={book.remain}
                             rules={[
                                 {
                                   required: true,

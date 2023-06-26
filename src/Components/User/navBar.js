@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { HomeOutlined, LogoutOutlined, ExclamationCircleOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import * as userService from '../../services/userServices';
+import * as bookService from '../../services/bookServices';
 
 const NavBar = ({ setBookList }) => {
     const user = JSON.parse(window.localStorage.getItem('user'));
@@ -17,8 +19,7 @@ const NavBar = ({ setBookList }) => {
     const dateFormat = 'YYYY/MM/DD';
 
     const callApi = async () => {
-        const response = await fetch('http://localhost:8080/books');
-        let data = await response.json();
+        const data = await bookService.getAllBook();
         setBookList(data);
         setBookData(data);
     }
@@ -107,29 +108,21 @@ const NavBar = ({ setBookList }) => {
 
     const handleUpdateAccount = (data) => {
         const newUser = {
-            id: data.id,
+            id: user.id,
             username: data.username,
             password: data.password,
             dob: date,
-            role: data.user === 'user' ? 'user' : 'manager',
+            role: user.role === 'user' ? 'user' : 'manager',
             email: data.email
         }
 
-        var options = {
-            method: "PUT" ,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newUser),
-        };
-
         const fetchUpdate = async () => {
-            const response = await fetch(`http://localhost:8080/user/${user.id}`, options);
+            const response = await userService.updateUser(user.id, newUser);
+            window.localStorage.setItem('user', JSON.stringify(response));
             api["success"]({
                 message: "Thành công",
                 description: "Cập nhật thông tin tài khoản thành công",
             });
-            window.localStorage.setItem('user', JSON.stringify(newUser));
         }   
         fetchUpdate();
     }

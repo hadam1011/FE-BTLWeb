@@ -2,39 +2,33 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Typography, notification } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as userService from '../services/userServices';
 
 const Login = () => {
     const [userList, setUserList] = useState([]);
     const navigate = useNavigate();
     const [api, contextHolder] = notification.useNotification();
 
-    const callApi = async () => {
-        const response = await fetch('http://localhost:8080/users');
-        let data = await response.json();
-        setUserList(data);
-    }
-
     useEffect(() => {
+        const callApi = async () => {
+            const data = await userService.getAllUser();
+            setUserList(data);
+        }
         callApi();
     }, [])
 
     const onFinish = (values) => {
-        let success = false;
+        let user = userList.find((user) => {
+            return user.username === values.username && user.password === values.password;
+        });
 
-        userList.forEach((user) => {
-            if (user.username === values.username && user.password === values.password) {
-                success = true;
-                window.localStorage.setItem("user", JSON.stringify(user));                
-            }
-        })
-
-        if (!success) {
+        if (user === undefined) {
             api["error"]({
                 message: "Đăng nhập không thành công",
                 description: "Sai thông tin tài khoản hoặc mật khẩu",
             });
         } else {
-            var user = JSON.parse(localStorage.getItem("user"));
+            localStorage.setItem('user', JSON.stringify(user));
             if (user.role === "manager") {
                 navigate('/admin');
             } else {

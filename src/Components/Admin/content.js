@@ -1,6 +1,7 @@
 import { Button, Input, Popconfirm, Space, Table, notification } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import * as bookService from '../../services/bookServices'
 
 const ContentPages = ({ setBook, setDisabled }) => {
     const [listBook, setListBook] = useState([]);
@@ -10,10 +11,9 @@ const ContentPages = ({ setBook, setDisabled }) => {
     const isLogin = JSON.parse(localStorage.getItem("user")) !== null;
 
     const callApi = async () => {
-        const response = await fetch('http://localhost:8080/books');
-        let data = await response.json();
-        setListBook(data);
-        setListSearch(data);
+        const response = await bookService.getAllBook();
+        setListBook(response);
+        setListSearch(response);
     }
 
     useEffect(() => {
@@ -27,15 +27,8 @@ const ContentPages = ({ setBook, setDisabled }) => {
     }
 
     const handleDelete = (record) => {
-        var options = {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-        };
-
         const fetchDelete = async () => {
-            const response = await fetch(`http://localhost:8080/book/${record.bookcode}`, options);
+            await bookService.deleteBook(record.bookcode);
             await callApi();
             api["success"]({
                 message: "Thành công",

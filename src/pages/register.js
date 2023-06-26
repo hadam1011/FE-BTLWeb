@@ -2,6 +2,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Form, Input, Typography, notification } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as userService from '../services/userServices'
 
 const Register = () => {
     const [userList, setUserList] = useState([]);
@@ -9,19 +10,16 @@ const Register = () => {
     const navigate = useNavigate();
     const [api, contextHolder] = notification.useNotification();
     const dateFormat = 'YYYY/MM/DD';
-
-    const callApi = async () => {
-        const response = await fetch('http://localhost:8080/users');
-        let data = await response.json();
-        setUserList(data);
-    }
-
+    
     useEffect(() => {
+        const callApi = async () => {
+            const data = await userService.getAllUser();
+            setUserList(data);
+        }
         callApi();
     }, [])
 
     const onFinish = (value) => {
-        let success = true;
         const user = {
             username: value.username,
             password: value.password,
@@ -30,28 +28,18 @@ const Register = () => {
             dob: date
         }
 
-        var options = {
-            method: "POST" ,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-        };
-
-        userList.forEach((item) => {
-            if (item.username === user.username) {
-                success = false;
-            }
+        const success = userList.find((item) => {
+            return item.username === user.username;
         })
 
-        if (!success) {
+        if (success) {
             api["error"]({
                 message: "Đăng ký không thành công",
                 description: "Tài khoản đã tồn tại",
             });
         } else {
             const fetchCreate = async () => {
-                const response = await fetch('http://localhost:8080/user', options);
+                await userService.createUser(user);
                 api["success"]({
                     message: "Thành công",
                     description: "Đăng ký tài khoản thành công",

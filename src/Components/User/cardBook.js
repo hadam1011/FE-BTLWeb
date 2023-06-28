@@ -1,13 +1,28 @@
-import { Card, Col, Rate, Space, Typography } from 'antd';
+import { Card, Col, Space, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import {StarFilled } from "@ant-design/icons"
+import { StarFilled } from "@ant-design/icons"
+import { useEffect, useState } from 'react';
+import * as starService from '../../services/starServices'
 
 const CardBook = ({ book }) => {
     const navigate = useNavigate();
+    const [star, setStar] = useState(0);
+    const [vote, setVote] = useState(0);
+
+    useEffect(() => {
+        const callApi = async () => {
+            const data = await starService.getStarsByBookId(book.bookcode);
+            let sum = data.reduce((store, star) => {
+                return store + star.star;
+            }, 0)
+            setStar(Math.floor(sum / data.length));
+            setVote(data.length);
+        }
+        callApi();
+    }, [])
 
     const handleClickCard = () => {
-        window.localStorage.setItem("book", JSON.stringify(book));
-        navigate('/book-detail');
+        navigate(`/book-detail/${book.bookcode}`);
     }
 
     return (
@@ -17,7 +32,7 @@ const CardBook = ({ book }) => {
                     hoverable
                     cover={<img src={book.avatar} height='250rem' />}
                     onClick={handleClickCard}
-                    bodyStyle={{padding: '12px', height: '6rem'}}
+                    bodyStyle={{padding: '0.8rem', height: '6rem'}}
                 >
                     <div
                         style={{
@@ -38,10 +53,20 @@ const CardBook = ({ book }) => {
                         </Typography.Text>
                     </div>
                     <Space>
-                        {Math.floor(book.star / book.comment).toString() === 'NaN' ? 0 : Math.floor(book.star / book.comment)}
-                        <StarFilled style={{color: 'yellow', fontSize: '15px'}}/>
+                        {star.toString() !== 'NaN' ? star : 0}
+                        <StarFilled style={{ color: 'yellow', fontSize: '0.9rem' }} />
+                        <span>
+                            <Typography.Text
+                                style={{
+                                    fontSize: '0.7rem',
+                                    fontStyle: 'italic',
+                                }}
+                            >
+                                {`(${vote} vote)`}
+                            </Typography.Text>
+                        </span>
                         <span style={{ border: '1px solid gray' }} />
-                        <Typography.Text style={{fontSize: '15px'}}>
+                        <Typography.Text style={{fontSize: '0.9rem'}}>
                             {`Đã bán: ${book.sold}`}
                         </Typography.Text>
                     </Space>

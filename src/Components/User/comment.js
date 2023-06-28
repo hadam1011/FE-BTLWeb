@@ -1,34 +1,25 @@
-import { Divider, Row, Col, Avatar, Typography, Rate, Popconfirm, notification } from "antd";
-import { UserOutlined  } from "@ant-design/icons"
+import { Divider, Row, Col, Avatar, Typography, Popconfirm } from "antd";
+import { UserOutlined } from "@ant-design/icons"
+import * as commentService from "../../services/commentServices"
 
-const Comment = ({ comment, setStar }) => {
-    const book = JSON.parse(window.localStorage.getItem('book'));
-    const user = JSON.parse(window.localStorage.getItem('user'));
-    const [api, contextHolder] = notification.useNotification();
+const Comment = ({ comment, setCommentList }) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const callApi = async () => {
+        const data = await commentService.getAllComment();
+        setCommentList(data);
+    }
 
     const handleDeleteComment = () => {
-        var options = {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-        };
-
         const fetchDelete = async () => {
-            const response = await fetch(`http://localhost:8080/comment/${comment.commentid}`, options);
-            setStar(Math.floor((book.star - comment.star) / (book.comment - 1)));
-            window.localStorage.setItem('render', JSON.stringify({ check: true }));
-            api["success"]({
-                message: "Thành công",
-                description: "Xóa bình luận thành công",
-            });
+            await commentService.deleteComment(comment.commentid);
+            await callApi();
         }
         fetchDelete();
     }
 
     return (
         <>
-            {contextHolder}
             <Row>
                 <Col span={5}>
                     <Avatar
@@ -39,8 +30,17 @@ const Comment = ({ comment, setStar }) => {
                     <Typography.Text strong>{comment.username}</Typography.Text>
                 </Col>
                 <Col span={16}>
-                    <Rate disabled defaultValue={comment.star} /><br />
                     <Typography.Text>{comment.content}</Typography.Text>
+                    <br></br>
+                    <Typography.Text
+                        style={{
+                            opacity: '0.8',
+                            fontStyle: 'italic',
+                            fontSize: '0.8rem'
+                        }}
+                    >
+                        {comment.date}
+                    </Typography.Text>
                 </Col>
                 <Popconfirm
                     title="Xóa comment?"

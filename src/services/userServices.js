@@ -2,7 +2,7 @@ import * as request from "../api/request";
 
 export const getAllUser = async () => {
     try {
-        const response = await request.getAll('users');
+        const response = await request.get('users');
         return response;
     } catch (e) {
         console.log(e);

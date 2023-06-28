@@ -8,7 +8,7 @@ const Cart = () => {
     const navigate = useNavigate();
     const [modal, contextHolder] = Modal.useModal();
     const [api, apiContextHolder] = notification.useNotification();
-    const user = JSON.parse(window.localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const callApi = async () => {
         const response = await fetch(`http://localhost:8080/book-cart/${user.id}`);
@@ -95,7 +95,6 @@ const Cart = () => {
         const callApi = async () => {
             const response = await fetch(`http://localhost:8080/books/${record.bookid}`);
             const data = await response.json();
-            window.localStorage.setItem('book', JSON.stringify(data));
             navigate('/book-detail');
         }
         callApi();

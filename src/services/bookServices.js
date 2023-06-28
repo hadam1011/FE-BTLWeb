@@ -2,7 +2,16 @@ import * as request from '../api/request';
 
 export const getAllBook = async () => {
     try {
-        const response = await request.getAll('books');
+        const response = await request.get('books');
+        return response;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+export const getBookById = async (id) => {
+    try {
+        const response = await request.get(`books/${id}`);
         return response;
     } catch (e) {
         console.log(e);

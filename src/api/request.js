@@ -4,7 +4,7 @@ const request = axios.create({
     baseURL: 'http://localhost:8080/',
 })
 
-export const getAll = async (path) => {
+export const get = async (path) => {
     const response = await request.get(path);
     return response.data;
 }

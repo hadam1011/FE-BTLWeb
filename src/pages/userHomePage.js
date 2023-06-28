@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import NavBar from '../Components/User/navBar'
 import { useLocation, Outlet, useNavigate } from 'react-router-dom'
 import Contents from '../Components/User/content'
+import * as bookService from '../services/bookServices'
 
 const {Header, Content, Footer} = Layout
 
@@ -10,20 +11,11 @@ const UserHomePage = () => {
     let location = useLocation();
     const navigate = useNavigate();
     const [bookList, setBookList] = useState([]);
-    const user = JSON.parse(window.localStorage.getItem('user'));
-    const reRender = JSON.parse(window.localStorage.getItem('re-render'));
-    const render = JSON.parse(window.localStorage.getItem('render'));
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const callApi = async () => {
-        const response = await fetch('http://localhost:8080/books');
-        let data = await response.json();
+        const data = await bookService.getAllBook();
         setBookList(data);
-        window.localStorage.removeItem('re-render');
-        window.localStorage.removeItem('render');
-    }
-
-    if (render !== null || reRender !== null) {
-        callApi();
     }
 
     useEffect(() => {

@@ -7,17 +7,17 @@ import * as userService from '../../services/userServices';
 import * as bookService from '../../services/bookServices';
 
 const NavBar = ({ setBookList }) => {
-    const user = JSON.parse(window.localStorage.getItem('user'));
     const navigate = useNavigate();
     const [current, setCurrent] = useState('home');
     const [bookData, setBookData] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const user = JSON.parse(localStorage.getItem('user'));
     const [date, setDate] = useState(user === null ? '' : user.dob);
     const [form] = Form.useForm();
     const [modal, contextHolder] = Modal.useModal();
     const [api, apiContextHolder] = notification.useNotification();
     const dateFormat = 'YYYY/MM/DD';
-
+    
     const callApi = async () => {
         const data = await bookService.getAllBook();
         setBookList(data);
@@ -117,8 +117,8 @@ const NavBar = ({ setBookList }) => {
         }
 
         const fetchUpdate = async () => {
-            const response = await userService.updateUser(user.id, newUser);
-            window.localStorage.setItem('user', JSON.stringify(response));
+            await userService.updateUser(user.id, newUser);
+            localStorage.setItem('user', JSON.stringify(newUser));
             api["success"]({
                 message: "Thành công",
                 description: "Cập nhật thông tin tài khoản thành công",

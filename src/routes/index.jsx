@@ -17,7 +17,7 @@ const RouterPages = () => {
         <Router>
             <Routes>
                 <Route path="/" element={<UserHomePage />} >
-                    <Route path="/book-detail" element={<BookDetail />} />
+                    <Route path="/book-detail/:bookcode" element={<BookDetail />} />
                     <Route path="/cart" element={<Cart />} />
                 </Route>
                 <Route path="/login" element={<Login />} />

@@ -1,35 +1,45 @@
 import { Row, Col, Typography, Rate, Space, Button, Input, Divider, Popconfirm, notification, Breadcrumb } from "antd";
 import { MinusOutlined, PlusOutlined, SendOutlined, HomeOutlined, BookOutlined } from "@ant-design/icons"
 import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import Comment from "../Components/User/comment";
+import * as bookService from "../services/bookServices"
+import * as commentService from "../services/commentServices"
+import * as starService from "../services/starServices"
 
 const BookDetail = () => {
-    const book = JSON.parse(window.localStorage.getItem('book'));
-    const user = JSON.parse(window.localStorage.getItem('user'));
     const [api, contextHolder] = notification.useNotification();
     const [count, setCount] = useState(1);
-    const [rate, setRate] = useState(5);
-    const [star, setStar] = useState(Math.floor(book.star / book.comment));
+    const [book, setBook] = useState({});
+    const [vote, setVote] = useState(0);
     const [commentList, setCommentList] = useState([]);
-    const render = JSON.parse(window.localStorage.getItem('render'));
+    const { bookcode } = useParams();
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const callApi = async () => {
-        const response = await fetch('http://localhost:8080/comments');
-        let data = await response.json();
+        const data = await commentService.getAllComment();
         setCommentList(data);
-        window.localStorage.removeItem('render');
-    }
-
-    if (render !== null) {
-        callApi();
     }
 
     useEffect(() => {
+        const fetchBook = async () => {
+            const data = await bookService.getBookById(bookcode);
+            const votes = await starService.getStarsByBookId(data.bookcode);
+            setVote(votes.length);
+            setBook(data);
+        }
+        fetchBook();
         callApi();
     }, [])
 
-    const handleRate = (e) => {
-        setRate(e);
+    const handleDate = () => {
+        var now = new Date();
+        var month = now.getMonth();
+        var day = now.getDate();
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+        var currentDate = now.getFullYear() + "-" + month + "-" + day;
+        return currentDate;
     }
 
     const handleComment = (e) => {
@@ -38,46 +48,13 @@ const BookDetail = () => {
             username: user.username,
             bookid: book.bookcode,
             content: document.getElementById('comment').value,
-            star: rate
+            date: handleDate()
         }
-
-        const newBook = {
-            bookcode: book.bookcode,
-            title: book.title,
-            author: book.author,
-            category: book.category,
-            establish: book.establish,
-            sold: book.sold,
-            avatar: book.avatar,
-            description: book.description,
-            totalpage: book.totalpage,
-            comment: book.comment + 1,
-            star: rate + book.star,
-        }
-
-        var options = {
-            method: "POST" ,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        };
-
-        var optionUpdate = {
-            method: "PUT" ,
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newBook),
-        };
 
         const fetchCreate = async () => {
-            const response = await fetch('http://localhost:8080/comment', options);
-            const responseUpdate = await fetch(`http://localhost:8080/book/${book.bookcode}`, optionUpdate);
+            await commentService.createComment(data);
             await callApi();    
-            setStar(Math.floor(newBook.star / newBook.comment));
             window.localStorage.setItem('re-render', JSON.stringify({ check: true }));
-            window.localStorage.setItem('book', JSON.stringify(newBook));
         }
         fetchCreate();
     }
@@ -90,20 +67,13 @@ const BookDetail = () => {
     }
 
     const handleClickBuy = () => {
-        var now = new Date();
-        var month = now.getMonth();
-        var day = now.getDate();
-        if (month < 10) month = "0" + month;
-        if (day < 10) day = "0" + day;
-        var currentDate = now.getFullYear() + "-" + month + "-" + day;
-
         const data = {
             userid: user.id,
             title: book.title,
             bookid: book.bookcode,
             quantity: count,
             status: "Đang chờ",
-            purchase: currentDate
+            purchase: handleDate()
         }
 
         var options = {
@@ -115,7 +85,7 @@ const BookDetail = () => {
         };
 
         const fetchCreate = async () => {
-            const response = await fetch(`http://localhost:8080/book-cart`, options);
+            await fetch(`http://localhost:8080/book-cart`, options);
             showNoti();
         }
         fetchCreate();
@@ -153,12 +123,6 @@ const BookDetail = () => {
                 <Col span={10}>
                     <img src={book.avatar} height='500rem' alt=""/>
                 </Col>
-                {/* <span
-                    style={{
-                        height: '600px',
-                        width: '2px',
-                        border: '1px solid black',
-                    }} /> */}
                 <Col span={13} style={{margin: '1em 0 0 1em'}}>
                     <Typography.Text>
                         {`Tác giả: ${book.author}`}
@@ -169,10 +133,19 @@ const BookDetail = () => {
                     <Typography.Title style={{margin: '0'}}>
                         {book.title}
                     </Typography.Title>
-                    <div style={{marginBottom: '1em'}}>
-                        <Space size="small">
-                            <Rate disabled value={star} />
-                            <span style={{border: '1px solid gray'}}/>
+                    <div style={{margin: '0.8rem 0px'}}>
+                        <Space size="small">    
+                            <Rate disabled value={5} style={{fontSize: '1.5rem'}}/>
+                            <Typography.Text
+                                style={{
+                                    fontSize: '0.8rem',
+                                    fontStyle: 'italic',
+                                    opacity: '0.8'
+                                }}
+                            >
+                                {`(${vote} Đánh giá)`}
+                            </Typography.Text>
+                            <span style={{border: '1px solid gray', height: '1.5rem', display: 'block'}}/>
                             <Typography.Text>
                                 {`Số lượng đã bán: ${book.sold}`}
                             </Typography.Text>
@@ -181,13 +154,13 @@ const BookDetail = () => {
                     <div>
                         <Typography.Text
                             style={{
-                                fontSize: '3.5em'
+                                fontSize: '3rem'
                             }}
                         >
-                            10,000đ
+                            {`${book.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}đ
                         </Typography.Text>
                     </div>
-                    <div style={{marginBottom: '1em'}}> 
+                    <div style={{marginBottom: '1rem'}}> 
                         <Typography.Text>Số lượng </Typography.Text>    
                     </div>
                     <div>
@@ -199,7 +172,7 @@ const BookDetail = () => {
                         </Button>
                         <Input
                             defaultValue="1"
-                            style={{ maxWidth: '6em', textAlign: 'center' }}
+                            style={{ maxWidth: '5.3rem', textAlign: 'center' }}
                             value={`${count}`}
                             readOnly
                         />
@@ -213,31 +186,32 @@ const BookDetail = () => {
                     >
                         <Button
                             type="primary"
-                            style={{ margin: '1em 0', minWidth: '11rem' }}
+                            style={{ margin: '0.9rem 0', minWidth: '11rem' }}
                         >
                             Chọn Mua
                         </Button>
                     </Popconfirm>
-                    <div>
-                        <Divider style={{ marginBottom: '1em'}}/>
-                        <Typography.Text strong style={{ fontSize: '16px'}}>Mô tả sách: </Typography.Text>
+                    <div style={{ marginBottom: '1rem'}}>
+                        <Divider style={{ marginBottom: '1rem'}}/>
+                        <Typography.Text strong style={{ fontSize: '1rem'}}>Mô tả sách: </Typography.Text>
                         <Typography.Text>{book.description}</Typography.Text>
                     </div>
                 </Col>
             </Row>
-            <Row style={{ marginTop: '1em', background: '#fff' }}>
-                <Col style={{ margin: '0 0 1em 1em'}} span={23}>
+            <Row style={{ marginTop: '0.9rem', background: '#fff' }}>
+                <Col style={{ margin: '0 0 0.9rem 0.9rem'}} span={23}>
                     <div>
                         <Typography.Text
                             strong
-                            style={{ fontSize: '1.5em' }}
+                            style={{ fontSize: '1.4rem' }}
                         >
                             Đánh giá - Nhận xét
                         </Typography.Text>
                     </div>
-                    <Typography.Text>Bình luận</Typography.Text>
+                    <div style={{ marginBottom: '0.5rem' }}>
+                        <Typography.Text>Bình luận</Typography.Text>
+                    </div>
                     <div>
-                        <Rate defaultValue={5} onChange={handleRate}/><br/>
                         <Input
                             id="comment"
                             suffix={suffix}
@@ -251,7 +225,11 @@ const BookDetail = () => {
                     {commentList.map((comment, index) => {
                         if (comment.bookid === book.bookcode) {
                             return (
-                                <Comment comment={comment} setStar={setStar} key={index} />
+                                <Comment
+                                    comment={comment}
+                                    setCommentList={setCommentList}
+                                    key={index}
+                                />
                             )
                         }
                     })}

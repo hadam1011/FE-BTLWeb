@@ -12,23 +12,26 @@ const BookDetail = () => {
     const [count, setCount] = useState(1);
     const [book, setBook] = useState({});
     const [vote, setVote] = useState(0);
+    const [userVote, setUserVote] = useState({});
     const [commentList, setCommentList] = useState([]);
     const { bookcode } = useParams();
     const user = JSON.parse(localStorage.getItem('user'));
 
-    const callApi = async () => {
-        const data = await commentService.getAllComment();
-        setCommentList(data);
-    }
-
     useEffect(() => {
-        const fetchBook = async () => {
-            const data = await bookService.getBookById(bookcode);
-            const votes = await starService.getStarsByBookId(data.bookcode);
+        const callApi = async () => {
+            const comments = await commentService.getAllComment();
+            setCommentList(comments);
+
+            const bookData = await bookService.getBookById(bookcode);
+            setBook(bookData);
+
+            const votes = await starService.getStarsByBookId(bookData.bookcode);
+            setUserVote(votes.find(vote => {
+                return vote.userid === user.id;
+            }))
             setVote(votes.length);
-            setBook(data);
         }
-        fetchBook();
+
         callApi();
     }, [])
 
@@ -53,7 +56,7 @@ const BookDetail = () => {
 
         const fetchCreate = async () => {
             await commentService.createComment(data);
-            await callApi();    
+            setCommentList([...commentList, data]); 
             window.localStorage.setItem('re-render', JSON.stringify({ check: true }));
         }
         fetchCreate();
@@ -91,6 +94,35 @@ const BookDetail = () => {
         fetchCreate();
     }
 
+    const handleClickRate = (e) => {
+        const data = {
+            userid: user.id,
+            bookid: book.bookcode,
+            star: e
+        }
+
+        const fetchUpdate = async () => {
+            const response = await starService.updateStar(userVote.starid, data);
+            setUserVote(response);
+        }
+
+        const fetchCreate = async () => {
+            const response = await starService.createStar(data);
+            setUserVote(response);
+            setVote(vote + 1);
+        }
+   
+        const fetchDelete = async () => {
+            await starService.deleteStar(userVote.starid);
+            setUserVote({});
+            setVote(vote - 1);
+        }
+
+        if (e !== 0 && userVote !== undefined) fetchUpdate();
+        else if (e !== 0) fetchCreate();
+        else fetchDelete();
+    }
+    
     const suffix = (
         <SendOutlined onClick={handleComment}/>
     );
@@ -208,6 +240,10 @@ const BookDetail = () => {
                             Đánh giá - Nhận xét
                         </Typography.Text>
                     </div>
+                    <Rate
+                        value={userVote === undefined ? 0 : userVote.star}
+                        onChange={handleClickRate}
+                    />
                     <div style={{ marginBottom: '0.5rem' }}>
                         <Typography.Text>Bình luận</Typography.Text>
                     </div>

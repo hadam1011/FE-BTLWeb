@@ -35,3 +35,11 @@ export const updateStar = async (id, data) => {
         console.log(err);
     }
 }
+
+export const deleteStar = async (id) => {
+    try {
+        await request.deleteObject(`star/${id}`);
+    } catch (err) {
+        console.log(err);
+    }
+}

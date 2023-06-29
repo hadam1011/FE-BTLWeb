@@ -12,29 +12,38 @@ const BookDetail = () => {
     const [count, setCount] = useState(1);
     const [book, setBook] = useState({});
     const [vote, setVote] = useState(0);
+    const [rate, setRate] = useState(0);
     const [userVote, setUserVote] = useState(undefined);
     const [commentList, setCommentList] = useState([]);
     const { bookcode } = useParams();
     const user = JSON.parse(localStorage.getItem('user'));
 
+    const handleStarDisplay = async (bookid) => {
+        const votes = await starService.getStarsByBookId(bookid);
+        setUserVote(votes.find(vote => {
+            return vote.userid === user.id;
+        }))
+        setVote(votes.length);
+    
+        const sumStar = votes.reduce((store, vote) => {
+            return store + vote.star;
+        }, 0);
+        setRate(Math.floor(sumStar / votes.length));
+    }
+
     useEffect(() => {
         const callApi = async () => {
-            const comments = await commentService.getAllComment();
-            setCommentList(comments);
-
             const bookData = await bookService.getBookById(bookcode);
             setBook(bookData);
 
-            const votes = await starService.getStarsByBookId(bookData.bookcode);
-            setUserVote(votes.find(vote => {
-                return vote.userid === user.id;
-            }))
-            setVote(votes.length);
-        }
+            const comments = await commentService.getAllComment();
+            setCommentList(comments);
 
+            handleStarDisplay(bookData.bookcode);
+        }
         callApi();
     }, [])
-
+    
     const handleDate = () => {
         var now = new Date();
         var month = now.getMonth();
@@ -102,21 +111,21 @@ const BookDetail = () => {
         }
 
         const fetchUpdate = async () => {
-            const response = await starService.updateStar(userVote.starid, data);
-            setUserVote(response);
+            await starService.updateStar(userVote.starid, data);
+            handleStarDisplay(book.bookcode);
             showNoti("Cập nhật đánh giá thành công");
         }
 
         const fetchCreate = async () => {
-            const response = await starService.createStar(data);
-            setUserVote(response);
+            await starService.createStar(data);
+            handleStarDisplay(book.bookcode);
             setVote(vote + 1);
             showNoti("Đánh giá thành công");
         }
    
         const fetchDelete = async () => {
             await starService.deleteStar(userVote.starid);
-            setUserVote(undefined);
+            handleStarDisplay(book.bookcode);
             setVote(vote - 1);
             showNoti("Hủy đánh giá thành công");
         }
@@ -170,7 +179,7 @@ const BookDetail = () => {
                     </Typography.Title>
                     <div style={{margin: '0.8rem 0px'}}>
                         <Space size="small">    
-                            <Rate disabled value={5} style={{fontSize: '1.5rem'}}/>
+                            <Rate disabled value={rate} style={{fontSize: '1.5rem'}}/>
                             <Typography.Text
                                 style={{
                                     fontSize: '0.8rem',

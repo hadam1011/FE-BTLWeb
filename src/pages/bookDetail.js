@@ -12,7 +12,7 @@ const BookDetail = () => {
     const [count, setCount] = useState(1);
     const [book, setBook] = useState({});
     const [vote, setVote] = useState(0);
-    const [userVote, setUserVote] = useState({});
+    const [userVote, setUserVote] = useState(undefined);
     const [commentList, setCommentList] = useState([]);
     const { bookcode } = useParams();
     const user = JSON.parse(localStorage.getItem('user'));
@@ -62,10 +62,10 @@ const BookDetail = () => {
         fetchCreate();
     }
 
-    const showNoti = () => {
+    const showNoti = (message) => {
         api["success"]({
             message: "Thành công",
-            description: "Đặt hàng thành công",
+            description: `${message}`,
           });
     }
 
@@ -89,11 +89,11 @@ const BookDetail = () => {
 
         const fetchCreate = async () => {
             await fetch(`http://localhost:8080/book-cart`, options);
-            showNoti();
+            showNoti("Đặt hàng thành công");
         }
         fetchCreate();
     }
-
+    
     const handleClickRate = (e) => {
         const data = {
             userid: user.id,
@@ -104,18 +104,21 @@ const BookDetail = () => {
         const fetchUpdate = async () => {
             const response = await starService.updateStar(userVote.starid, data);
             setUserVote(response);
+            showNoti("Cập nhật đánh giá thành công");
         }
 
         const fetchCreate = async () => {
             const response = await starService.createStar(data);
             setUserVote(response);
             setVote(vote + 1);
+            showNoti("Đánh giá thành công");
         }
    
         const fetchDelete = async () => {
             await starService.deleteStar(userVote.starid);
-            setUserVote({});
+            setUserVote(undefined);
             setVote(vote - 1);
+            showNoti("Hủy đánh giá thành công");
         }
 
         if (e !== 0 && userVote !== undefined) fetchUpdate();

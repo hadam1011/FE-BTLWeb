@@ -12,7 +12,7 @@ const Accounts = () => {
     const dateFormat = 'YYYY/MM/DD';
     
     const callApi = async () => {
-        const data = userService.getAllUser();
+        const data = await userService.getAllUser();
         setUserList(data);
     }
 

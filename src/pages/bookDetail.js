@@ -17,6 +17,13 @@ const BookDetail = () => {
     const [commentList, setCommentList] = useState([]);
     const { bookcode } = useParams();
     const user = JSON.parse(localStorage.getItem('user'));
+    
+    const showNoti = (message) => {
+        api["success"]({
+            message: "Thành công",
+            description: `${message}`,
+          });
+    }
 
     const handleStarDisplay = async (bookid) => {
         const votes = await starService.getStarsByBookId(bookid);
@@ -46,7 +53,7 @@ const BookDetail = () => {
     
     const handleDate = () => {
         var now = new Date();
-        var month = now.getMonth();
+        var month = now.getMonth() + 1;
         var day = now.getDate();
         if (month < 10) month = "0" + month;
         if (day < 10) day = "0" + day;
@@ -71,12 +78,6 @@ const BookDetail = () => {
         fetchCreate();
     }
 
-    const showNoti = (message) => {
-        api["success"]({
-            message: "Thành công",
-            description: `${message}`,
-          });
-    }
 
     const handleClickBuy = () => {
         const data = {

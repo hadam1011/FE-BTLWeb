@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import * as bookService from '../services/bookServices';
 import * as categoryService from '../services/categoryServices';
+import { useContext } from 'react';
+import { AppContext } from '../context/appContext';
 
-const Book = ({ book, disabled }) => {
+const Book = () => {
+    const { book, disabled } = useContext(AppContext);
     const [bookList, setBookList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [selectValue, setSelectValue] = useState(book.category);

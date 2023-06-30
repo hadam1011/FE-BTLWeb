@@ -1,14 +1,16 @@
 import { Button, Input, Popconfirm, Space, Table, notification } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import * as bookService from '../../services/bookServices'
+import { AppContext } from "../../context/appContext";
 
-const ContentPages = ({ setBook, setDisabled }) => {
+const ContentPages = () => {
     const [listBook, setListBook] = useState([]);
     const [listSearch, setListSearch] = useState([]);
     const navigate = useNavigate();
     const [api, contextHolder] = notification.useNotification();
     const isLogin = JSON.parse(localStorage.getItem("user")) !== null;
+    const { setBook, setDisabled } = useContext(AppContext);
 
     const callApi = async () => {
         const response = await bookService.getAllBook();

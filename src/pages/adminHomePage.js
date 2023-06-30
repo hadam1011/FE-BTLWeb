@@ -2,15 +2,14 @@ import { Layout } from 'antd'
 import { useLocation, Outlet, useNavigate } from 'react-router-dom'
 import NavBar from '../Components/Admin/navBar'
 import ContentPages from '../Components/Admin/content'
-import { useContext, useEffect } from 'react'
-import { UserContext } from '../context/userContext'
+import { useEffect } from 'react'
 
 const {Header, Content, Footer} = Layout
 
-const AdminHomePage = ({ setBook, setDisabled }) => {
+const AdminHomePage = () => {
     let location = useLocation();
     const navigate = useNavigate();
-    const { user } = useContext(UserContext);
+    const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
         if (user === null) {
@@ -27,7 +26,7 @@ const AdminHomePage = ({ setBook, setDisabled }) => {
                     <NavBar />
                 </Header>
                 <Content style={{margin: '0 5em'}}>  
-                    {location.pathname === '/admin' && <ContentPages setBook={setBook} setDisabled={setDisabled} />}
+                    {location.pathname === '/admin' && <ContentPages />}
                     <Outlet />
                 </Content>
                 <Footer style={{textAlign: 'center'}}>

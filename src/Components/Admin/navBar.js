@@ -1,13 +1,11 @@
-import { Menu, Modal } from 'antd';
-import { useState } from 'react';
-import { BookOutlined, LoginOutlined, LogoutOutlined, ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons'
+import { Menu } from 'antd';
+import React, { useState } from 'react';
+import { BookOutlined, UserOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
 
-const NavBar = () => {
+const NavBar = ({collapsed}) => {
     const [current, setCurrent] = useState('book');
     const navigate = useNavigate();
-    const [modal, contextHolder] = Modal.useModal();
-    const isLogin = JSON.parse(localStorage.getItem("user")) !== null;
 
     const items = [
     {
@@ -20,44 +18,49 @@ const NavBar = () => {
         key: 'account',
         icon: <UserOutlined />
     },
-    {
-        label: isLogin ? 'Logout' : 'Login',
-        key: isLogin ? 'logout' : 'login',
-        icon: isLogin ? <LogoutOutlined /> : <LoginOutlined />
-    }
 ]
 
     const handleClick = (e) => {
         setCurrent(e.key);
         if (e.key === 'book') {
             navigate('/admin');
-        } else if (e.key === 'login') {
-            navigate('/login');
-        } else if (e.key === 'logout'){
-            modal.confirm({
-                title: "Đăng xuất",
-                content: "Bạn muốn đăng xuất?",
-                icon: <ExclamationCircleOutlined />,
-                onOk: () => {
-                    window.localStorage.clear();
-                    navigate("/admin");
-                },
-              });
         } else if (e.key === 'account') {
             navigate('/admin/accounts');
         }
     }
 
     return (
-        <div >
-            {contextHolder}
-            <Menu
-                onClick={handleClick}
-                selectedKeys={[current]} 
-                mode="horizontal"
-                items={items}
-            />
-        </div>
+        <>
+            <div>
+                <UserOutlined style={{
+                    fontSize: '2.5rem',
+                    color: 'white',
+                    margin: '1rem'
+                }} />    
+                {!collapsed &&
+                    (
+                        <span style={{color: 'white', fontSize: '1.5rem'}}>
+                            Manager
+                        </span>
+                    )
+                }
+                <div style={{
+                    width: '100%',
+                    height: '0.1rem',
+                    backgroundColor: 'white',
+                    margin: '1rem 0' 
+                }} />
+            </div>
+            <div >
+                <Menu
+                    onClick={handleClick}
+                    selectedKeys={[current]} 
+                    mode="inline"
+                    items={items}
+                    theme='dark'
+                />
+            </div>
+        </>
     )
 }
 

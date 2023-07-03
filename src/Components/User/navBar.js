@@ -86,7 +86,6 @@ const NavBar = ({ setBookList }) => {
     const handleClick = (e) => {
         if (e.key === 'home') {
             setCurrent(e.key);
-            window.localStorage.removeItem('book');
             navigate('/');
         } else if (e.key === 'logout'){
             modal.confirm({
@@ -139,7 +138,7 @@ const NavBar = ({ setBookList }) => {
             />
             <Modal
                 open={isOpen}
-                title="Thông tin tài khoản"
+                title="Account's information"
                 onCancel={() => setIsOpen(false)}
                 okText="Save"
                 onOk={() => {

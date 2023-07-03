@@ -8,6 +8,7 @@ import BookDetail from "../pages/bookDetail";
 import Cart from "../pages/cart";
 import Accounts from "../pages/accounts";
 import PageNotFound from "../Components/Error/404";
+import NotAuthorPage from "../Components/Error/403";
 
 const RouterPages = () => {
     return (
@@ -23,6 +24,7 @@ const RouterPages = () => {
                     <Route path='/admin/book' element={<Book />} />
                     <Route path='/admin/accounts' element={<Accounts />} />
                 </Route>
+                <Route path='403-error' element={<NotAuthorPage />} />
                 <Route path="*" element={<PageNotFound />} />   
             </Routes>
         </Router>

@@ -5,7 +5,7 @@ import NavBar from "../Components/Admin/navBar";
 import ContentPages from "../Components/Admin/content";
 import React, { useEffect, useState } from "react";
 import AdminAvatar from "../Components/Admin/avatar";
-import '../Components/Admin/navbar.css';
+import "../Components/Admin/navbar.css";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -27,15 +27,17 @@ const AdminHomePage = () => {
     <div>
       <Layout style={{ minHeight: "100vh" }}>
         <Sider collapsible collapsed={collapsed} trigger={null}>
-          <NavBar collapsed={collapsed}/>
+          <NavBar collapsed={collapsed} />
         </Sider>
         <Layout>
-          <Header style={{
-            backgroundColor: '#fff',
-            padding: '0 1rem',
-            display: 'flex',
-            justifyContent: 'space-between'
-          }}>
+          <Header
+            style={{
+              backgroundColor: "#fff",
+              padding: "0 1rem",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             {React.createElement(
               collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
               {
@@ -43,9 +45,12 @@ const AdminHomePage = () => {
                 onClick: () => setCollapsed(!collapsed),
               }
             )}
+            <div>
               <AdminAvatar />
+              {user.username}
+            </div>
           </Header>
-          <Content style={{margin: '0 1rem'}}>
+          <Content style={{ margin: "0 1rem" }}>
             {location.pathname === "/admin" && <ContentPages />}
             <Outlet />
           </Content>

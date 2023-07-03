@@ -49,7 +49,7 @@ const AdminAvatar = () => {
         <Avatar
           size="large"
           style={{
-            marginTop: "0.9rem",
+            margin: "0.9rem 0.5rem 0.7rem 0",
           }}
           src={
             isLogin

@@ -144,7 +144,7 @@ const BookDetail = () => {
         <>
             {contextHolder}
             <Breadcrumb
-                style={{marginBottom: '1em'}}
+                style={{marginBottom: '1rem'}}
                 items={[
                     {
                         title: (
@@ -165,10 +165,10 @@ const BookDetail = () => {
                 ]}
             />
             <Row style={{background: '#fff'}}>
-                <Col span={10}>
-                    <img src={book.avatar} height='500rem' alt=""/>
+                <Col xl={8} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <img src={book.avatar} height='350rem' alt=""/>
                 </Col>
-                <Col span={13} style={{margin: '1em 0 0 1em'}}>
+                <Col xl={15} style={{margin: '1rem 0 0 1rem'}}>
                     <Typography.Text>
                         {`Tác giả: ${book.author}`}
                     </Typography.Text><br />
@@ -236,8 +236,8 @@ const BookDetail = () => {
                             Chọn Mua
                         </Button>
                     </Popconfirm>
-                    <div style={{ marginBottom: '1rem'}}>
-                        <Divider style={{ marginBottom: '1rem'}}/>
+                    <div style={{ marginBottom: '1rem', marginRight: '1rem' }}>
+                        <Divider />
                         <Typography.Text strong style={{ fontSize: '1rem'}}>Mô tả sách: </Typography.Text>
                         <Typography.Text>{book.description}</Typography.Text>
                     </div>

@@ -74,8 +74,6 @@ const NavBar = ({ setBookList }) => {
                 style={{
                     minWidth: '15rem',
                     marginTop: '1rem',
-                    position: 'absolute',
-                    left: '55rem'
                 }}  
             />
         ),
@@ -135,6 +133,7 @@ const NavBar = ({ setBookList }) => {
                 selectedKeys={[current]} 
                 mode="horizontal"
                 items={items}
+                style={{display: "flex", alignItems: 'center', justifyContent: 'center'}}
             />
             <Modal
                 open={isOpen}

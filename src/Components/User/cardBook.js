@@ -27,7 +27,7 @@ const CardBook = ({ book }) => {
 
     return (
         <>
-            <Col span={4}>
+            <Col xl={4} lg={6} md={8} sm={12} xs={24}>
                 <Card
                     hoverable
                     cover={<img src={book.avatar} height='250rem' />}

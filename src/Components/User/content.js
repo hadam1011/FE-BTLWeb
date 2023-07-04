@@ -39,7 +39,7 @@ const Contents = ({ bookList }) => {
                     }
                 ]}
             />
-            <Row gutter={[16, 8]}>
+            <Row gutter={[16, 16]} >
                 {renderCard()}
             </Row>
             <Pagination
@@ -49,8 +49,9 @@ const Contents = ({ bookList }) => {
                 hideOnSinglePage
                 onChange={handleChangePagination}
                 style={{
-                    float: 'right',
-                    marginTop: '1rem'
+                    display: 'flex',
+                    marginTop: '1rem',
+                    justifyContent: 'center',
                 }}
             />
         </div>

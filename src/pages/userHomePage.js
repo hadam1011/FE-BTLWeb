@@ -38,7 +38,7 @@ const UserHomePage = () => {
                 >
                     <NavBar setBookList={setBookList} />
                 </Header>
-                <Content style={{ margin: '1em 5em 0 5em', minHeight: '100vh' }}>  
+                <Content style={{ margin: '1rem 1rem 0 1rem', minHeight: '100vh' }}>  
                     {location.pathname === '/' && <Contents bookList={bookList}/>}
                     <Outlet />
                 </Content>

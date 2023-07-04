@@ -1,17 +1,19 @@
 import { Row, Col, Typography, Rate, Space, Button, Input, Divider, Popconfirm, notification, Breadcrumb } from "antd";
-import { MinusOutlined, PlusOutlined, SendOutlined, HomeOutlined, BookOutlined } from "@ant-design/icons"
+import { SendOutlined, HomeOutlined, BookOutlined } from "@ant-design/icons"
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import Comment from "../Components/User/comment";
+import ChooseQuantity from "../Components/User/chooseQuantity";
 import * as bookService from "../services/bookServices"
 import * as commentService from "../services/commentServices"
 import * as starService from "../services/starServices"
+import * as cartService from "../services/cartServices"
 
 const BookDetail = () => {
     const [api, contextHolder] = notification.useNotification();
-    const [count, setCount] = useState(1);
     const [book, setBook] = useState({});
     const [vote, setVote] = useState(0);
+    const [count, setCount] = useState(1);
     const [rate, setRate] = useState(0);
     const [userVote, setUserVote] = useState(undefined);
     const [commentList, setCommentList] = useState([]);
@@ -73,11 +75,9 @@ const BookDetail = () => {
         const fetchCreate = async () => {
             await commentService.createComment(data);
             setCommentList([...commentList, data]); 
-            window.localStorage.setItem('re-render', JSON.stringify({ check: true }));
         }
         fetchCreate();
     }
-
 
     const handleClickBuy = () => {
         const data = {
@@ -85,20 +85,12 @@ const BookDetail = () => {
             title: book.title,
             bookid: book.bookcode,
             quantity: count,
-            status: "Đang chờ",
-            purchase: handleDate()
+            price: book.price,
+            total: book.price * count
         }
 
-        var options = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        };
-
         const fetchCreate = async () => {
-            await fetch(`http://localhost:8080/book-cart`, options);
+            await cartService.createOrder(data);
             showNoti("Đặt hàng thành công");
         }
         fetchCreate();
@@ -209,21 +201,7 @@ const BookDetail = () => {
                         <Typography.Text>Số lượng </Typography.Text>    
                     </div>
                     <div>
-                        <Button
-                            disabled={count === 1}
-                            onClick={() => setCount(count - 1)}
-                        >
-                            <MinusOutlined />
-                        </Button>
-                        <Input
-                            defaultValue="1"
-                            style={{ maxWidth: '5.3rem', textAlign: 'center' }}
-                            value={`${count}`}
-                            readOnly
-                        />
-                        <Button onClick={() => setCount(count + 1)}>
-                            <PlusOutlined />
-                        </Button>
+                        <ChooseQuantity count={count} setCount={setCount}/>
                     </div>
                     <Popconfirm
                         title="Đặt mua quyển sách này?"

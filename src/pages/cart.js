@@ -1,7 +1,8 @@
-import { Button, Space, Table, Tag, Modal, notification, Breadcrumb } from "antd";
+import { Button, Space, Table, Modal, notification, Breadcrumb, Input } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ExclamationCircleOutlined, ShoppingCartOutlined, HomeOutlined } from "@ant-design/icons"
+import { ExclamationCircleOutlined, ShoppingCartOutlined, HomeOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
+import * as cartService from '../services/cartServices'
 
 const Cart = () => {
     const [bookList, setBookList] = useState([]);
@@ -11,8 +12,7 @@ const Cart = () => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const callApi = async () => {
-        const response = await fetch(`http://localhost:8080/book-cart/${user.id}`);
-        let data = await response.json();
+        const data = await cartService.getUserCart(user.id);
         setBookList(data);
     }
     
@@ -32,15 +32,8 @@ const Cart = () => {
     }
 
     const handleCancel = (id) => {
-        var options = {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-        };
-    
         const fetchDelete = async () => {
-            const response = await fetch(`http://localhost:8080/book-cart/${id}`, options);
+            await cartService.deleteOrder(id);
             await callApi();
             api["success"]({
                 message: "Thành công",
@@ -48,6 +41,24 @@ const Cart = () => {
             });
         }
         fetchDelete();
+    }
+
+    const handleUpdate = (data, num) => {
+        const newData = {
+            userid: data.userid,
+            bookid: data.bookid,
+            title: data.title,
+            quantity: data.quantity + num,
+            book_cartid: data.book_cartid,
+            price: data.price,
+            total: data.price * (data.quantity + num)
+        }
+
+        const fetchUpdate = async () => {
+            await cartService.updateOrder(newData);
+            await callApi();
+        }
+        fetchUpdate();
     }
 
     const handleConfirmBuy = (record) => {
@@ -82,7 +93,6 @@ const Cart = () => {
         const fetchUpdate = async () => {
             const response = await fetch(`http://localhost:8080/book-cart/${record.book_cartid}`, options);
             await callApi();
-            window.localStorage.setItem('re-render', JSON.stringify({check : true}));
             api["success"]({
                 message: "Thành công",
                 description: "Mua hàng thành công",
@@ -92,45 +102,60 @@ const Cart = () => {
     }
 
     const handleView = (record) => {
-        const callApi = async () => {
-            const response = await fetch(`http://localhost:8080/books/${record.bookid}`);
-            const data = await response.json();
-            navigate('/book-detail');
-        }
-        callApi();
+        navigate(`/book-detail/${record.bookid}`);
     }
 
     const columns = [
         {
-            title: "Mã sách",
-            dataIndex: "book_cartid",
-            key: "book_cartid"
-        },
-        {
             title: "Tên sách",
             dataIndex: "title",
-            key: "title"
+            key: "title",
         }, 
         {
-            title: "Ngày đặt mua",
-            dataIndex: "purchase",
-            key: "purchase"
+            title: "Đơn giá",
+            dataIndex: "price",
+            render: (_, record) => {
+                return (
+                    <>
+                        {`${record.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}đ
+                    </>
+                )
+            }
         }, 
         {
             title: "Số lượng",
             dataIndex: "quantity",
-            key: "quantity"
+            render: (_, record) => {
+                return (
+                    <>
+                        <Button
+                            disabled={record.quantity === 1}
+                            onClick={() => handleUpdate(record, -1)}
+                        >
+                            <MinusOutlined />
+                        </Button>
+                        <Input
+                            value={record.quantity}
+                            style={{ maxWidth: '5.3rem', textAlign: 'center' }}
+                            readOnly
+                        />
+                        <Button onClick={() => handleUpdate(record, 1)}>
+                            <PlusOutlined />
+                        </Button>
+                    </>
+                )
+            }
         }, 
         {
-            title: "Trạng thái",
-            dataIndex: "status",
-            key: "status",
+            title: "Thành tiền",
+            dataIndex: "total",
             render: (_, record) => {
-                let color = record.status === "Đã mua" ? "green" : "gray";
                 return (
-                    <Tag color={color} style={{fontSize: '14px'}}>{record.status}</Tag>
+                    <>
+                        {`${record.total}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}đ
+                    </>
                 )
-            },
+            }
         }, 
         {
             title: "Action",
@@ -139,22 +164,20 @@ const Cart = () => {
                 return (
                     <>
                         <Space size="small">
-                            {record.status === 'Đang chờ' &&
-                            <Space size="small">
-                                <Button
-                                    danger
-                                    type="primary"
-                                    onClick={() => handleConfirmCancel(record.book_cartid)}
-                                >
-                                    Hủy
-                                </Button>
-                                <Button
-                                    type="primary"
-                                    onClick={() => handleConfirmBuy(record)}
-                                >
-                                    Xác nhận
-                                </Button>
-                            </Space>}
+                            <Button
+                                type="primary"
+                                style={{ backgroundColor: "green" }}
+                                onClick={() => handleConfirmBuy(record)}
+                            >
+                                Mua hàng
+                            </Button>
+                            <Button
+                                type="primary"
+                                danger
+                                onClick={() => handleConfirmCancel(record.book_cartid)}
+                            >
+                                Hủy đơn
+                            </Button>
                             <Button
                                 type="primary"
                                 onClick={() => handleView(record)}

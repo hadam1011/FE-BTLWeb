@@ -73,32 +73,6 @@ const Cart = () => {
     }
 
     const handleBuy = (record) => {
-        const data = {  
-            userid: record.userid,
-            bookid: record.bookid,
-            title: record.title,
-            purchase: record.purchase,
-            quantity: record.quantity,
-            status: "Đã mua"
-        }
-
-        var options = {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        };
-
-        const fetchUpdate = async () => {
-            const response = await fetch(`http://localhost:8080/book-cart/${record.book_cartid}`, options);
-            await callApi();
-            api["success"]({
-                message: "Thành công",
-                description: "Mua hàng thành công",
-            });
-        }
-        fetchUpdate();
     }
 
     const handleView = (record) => {
@@ -110,7 +84,7 @@ const Cart = () => {
             title: "Tên sách",
             dataIndex: "title",
             key: "title",
-        }, 
+        },
         {
             title: "Đơn giá",
             dataIndex: "price",
@@ -120,7 +94,7 @@ const Cart = () => {
                         {`${record.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}đ
                     </>
                 )
-            }
+            },
         }, 
         {
             title: "Số lượng",
@@ -144,7 +118,7 @@ const Cart = () => {
                         </Button>
                     </>
                 )
-            }
+            },
         }, 
         {
             title: "Thành tiền",
@@ -155,7 +129,7 @@ const Cart = () => {
                         {`${record.total}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}đ
                     </>
                 )
-            }
+            },
         }, 
         {
             title: "Action",
@@ -163,7 +137,10 @@ const Cart = () => {
             render: (_, record) => {
                 return (
                     <>
-                        <Space size="small">
+                        <Space
+                            size="small"
+                            style={{}}
+                        >
                             <Button
                                 type="primary"
                                 style={{ backgroundColor: "green" }}
@@ -188,7 +165,7 @@ const Cart = () => {
                     
                     </>
                 );
-            }
+            },
         }
     ]
 
@@ -225,6 +202,7 @@ const Cart = () => {
                 pagination={{
                     hideOnSinglePage: true,
                 }}
+                scroll={{x: '100vw'}}
             />
         </>
     )

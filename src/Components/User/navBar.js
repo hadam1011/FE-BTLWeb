@@ -1,16 +1,25 @@
-import { Menu, Modal, Input, Form, DatePicker, notification } from 'antd';
+import { Menu, Modal, Input, Form, DatePicker, notification, Drawer } from 'antd';
 import { useEffect, useState } from 'react';
-import { HomeOutlined, LogoutOutlined, ExclamationCircleOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons'
+import {
+    HomeOutlined,
+    LogoutOutlined,
+    ExclamationCircleOutlined,
+    ShoppingCartOutlined,
+    UserOutlined,
+    MenuOutlined
+} from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import * as userService from '../../services/userServices';
 import * as bookService from '../../services/bookServices';
+import '../../App.css';
 
 const NavBar = ({ setBookList }) => {
     const navigate = useNavigate();
     const [current, setCurrent] = useState('home');
     const [bookData, setBookData] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const user = JSON.parse(localStorage.getItem('user'));
     const [date, setDate] = useState(user === null ? '' : user.dob);
     const [form] = Form.useForm();
@@ -125,16 +134,37 @@ const NavBar = ({ setBookList }) => {
     }
 
     return (
-        <div >
+        <div>
             {contextHolder}
             {apiContextHolder}
-            <Menu
-                onClick={handleClick}
-                selectedKeys={[current]} 
-                mode="horizontal"
-                items={items}
-                style={{display: "flex", alignItems: 'center', justifyContent: 'center'}}
-            />
+            <div className="mobile-hidden">
+                <Menu
+                    onClick={handleClick}
+                    selectedKeys={[current]} 
+                    mode="horizontal"
+                    items={items}
+                    style={{display: "flex", alignItems: 'center', justifyContent: 'center'}}
+                />
+            </div>
+            <div className="mobile-visible">
+                <MenuOutlined
+                    onClick={() => setIsDrawerOpen(true)}
+                    className='menu-item'
+                />
+                <Drawer
+                    title="Menu"
+                    placement="right"
+                    onClose={() => setIsDrawerOpen(false)}
+                    open={isDrawerOpen}
+                >
+                    <Menu
+                        onClick={handleClick}
+                        selectedKeys={[current]} 
+                        mode="vertical"
+                        items={items}
+                    />
+                </Drawer>
+            </div>
             <Modal
                 open={isOpen}
                 title="Account's information"

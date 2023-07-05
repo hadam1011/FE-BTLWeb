@@ -33,7 +33,8 @@ const UserHomePage = () => {
                         padding: '0',
                         position: 'sticky',
                         top: '0',
-                        zIndex: '1'
+                        zIndex: '1',
+                        backgroundColor: 'white'
                     }}
                 >
                     <NavBar setBookList={setBookList} />

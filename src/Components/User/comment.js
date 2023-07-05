@@ -25,11 +25,11 @@ const Comment = ({ comment, setCommentList }) => {
                     <Avatar
                         size={48}
                         icon={<UserOutlined />}
-                        style={{marginRight: '0.5em'}}
+                        style={{marginRight: '0.5rem'}}
                     />
                     <Typography.Text strong>{comment.username}</Typography.Text>
                 </Col>
-                <Col span={16}>
+                <Col xs={10} xl={15}>
                     <Typography.Text>{comment.content}</Typography.Text>
                     <br></br>
                     <Typography.Text
@@ -48,7 +48,7 @@ const Comment = ({ comment, setCommentList }) => {
                 >
                     <Typography.Link
                         style={{
-                            marginTop: '1em',
+                            marginTop: '1rem',
                             color: 'blue'
                         }}
                         hidden={comment.userid !== user.id}

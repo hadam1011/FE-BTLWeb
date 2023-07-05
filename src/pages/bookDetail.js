@@ -157,10 +157,26 @@ const BookDetail = () => {
                 ]}
             />
             <Row style={{background: '#fff'}}>
-                <Col xl={8} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                <Col
+                    xl={8}
+                    md={9}
+                    sm={24}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
                     <img src={book.avatar} height='350rem' alt=""/>
                 </Col>
-                <Col xl={15} style={{margin: '1rem 0 0 1rem'}}>
+                <Col
+                    xl={15}
+                    lg={14}
+                    md={12}
+                    style={{
+                        margin: '1rem 0 0 1rem'
+                    }}
+                >
                     <Typography.Text>
                         {`Tác giả: ${book.author}`}
                     </Typography.Text><br />

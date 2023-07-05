@@ -1,0 +1,23 @@
+.mobile-visible {
+    display: none;
+}
+  
+.mobile-hidden {
+    display: block;
+}
+
+.menu-item {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+}
+
+@media only screen and (max-width: 765px) {
+    .mobile-visible {
+        display: block;
+        float: left;
+    }
+      
+    .mobile-hidden {
+        display: none;
+    }
+}

@@ -186,7 +186,7 @@ const BookDetail = () => {
                     <Typography.Title style={{margin: '0'}}>
                         {book.title}
                     </Typography.Title>
-                    <div style={{margin: '0.8rem 0px'}}>
+                    <div style={{margin: '0.8rem 0'}}>
                         <Space size="small">    
                             <Rate disabled value={rate} style={{fontSize: '1.5rem'}}/>
                             <Typography.Text

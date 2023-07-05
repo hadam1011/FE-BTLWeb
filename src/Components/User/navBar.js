@@ -77,14 +77,16 @@ const NavBar = ({ setBookList }) => {
     {
         key:  'search',
         label: (
-            <Input.Search
-                allowClear
-                onChange={handleSearch}
-                style={{
-                    minWidth: '15rem',
-                    marginTop: '1rem',
-                }}  
-            />
+            <div className='mobile-hidden'>
+                <Input.Search
+                    allowClear
+                    onChange={handleSearch}
+                    style={{
+                        minWidth: '15rem',
+                        marginTop: '1rem',
+                    }}  
+                />
+            </div>
         ),
         disabled: true
     },
@@ -147,10 +149,12 @@ const NavBar = ({ setBookList }) => {
                 />
             </div>
             <div className="mobile-visible">
-                <MenuOutlined
-                    onClick={() => setIsDrawerOpen(true)}
-                    className='menu-item'
-                />
+                <div className="mobile-nav user-menu-item">
+                    <MenuOutlined
+                        onClick={() => setIsDrawerOpen(true)}
+                    />
+                    <Input.Search allowClear className='search-item'/>
+                </div>
                 <Drawer
                     title="Menu"
                     placement="right"

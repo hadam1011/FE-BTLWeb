@@ -22,6 +22,20 @@
     margin-right: 1rem;
 }
 
+.ant-card {
+    overflow: hidden;
+}
+
+div.ant-card-cover{
+    display: flex;
+    justify-content: center;
+}
+
+.book-image {
+    height: 25rem;
+    width: auto !important;
+}
+
 @media only screen and (max-width: 765px) {
     .mobile-visible {
         display: block;
@@ -29,5 +43,12 @@
       
     .mobile-hidden {
         display: none;
+    }
+}
+
+@media only screen and (min-width: 481px) {
+    .book-image {
+        height: 12.5rem;
+        width: auto !important;
     }
 }

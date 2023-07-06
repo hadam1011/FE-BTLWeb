@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { StarFilled } from "@ant-design/icons"
 import { useEffect, useState } from 'react';
 import * as starService from '../../services/starServices'
+import '../../App.css';
 
 const CardBook = ({ book }) => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const CardBook = ({ book }) => {
             <Col xl={4} lg={6} md={8} sm={12} xs={24}>
                 <Card
                     hoverable
-                    cover={<img src={book.avatar} height='250rem' />}
+                    cover={<img src={book.avatar} className='book-image' />}
                     onClick={handleClickCard}
                     bodyStyle={{padding: '0.8rem', height: '6rem'}}
                 >

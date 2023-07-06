@@ -45,7 +45,6 @@ const NavBar = ({ setBookList }) => {
         const keywords = e.target.value.toLowerCase();
         if (keywords.length === 0) callApi();
 
-        console.log(keywords);
         var newList = bookData.filter((book) => {
             return book.title.toLowerCase().includes(keywords) ||
                 book.author.toLowerCase().includes(keywords);
@@ -153,7 +152,10 @@ const NavBar = ({ setBookList }) => {
                     <MenuOutlined
                         onClick={() => setIsDrawerOpen(true)}
                     />
-                    <Input.Search allowClear className='search-item'/>
+                    <Input.Search
+                        onChange={handleSearch}
+                        allowClear
+                        className='search-item' />
                 </div>
                 <Drawer
                     title="Menu"

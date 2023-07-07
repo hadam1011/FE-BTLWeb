@@ -59,88 +59,111 @@ const Register = () => {
     return (
         <div
             style={{
-                width: '40rem',
-                height: '65vh',
+                boxSizing: 'border-box',
+                width: '80%',
+                height: '80vh',
+                margin: '2rem auto 0',
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                margin: '10rem 10rem 10rem 28rem',
                 boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                borderRadius: '2rem',
+                overflow: 'hidden'
             }}
         >   
             {contextHolder}
-            <Typography.Title style={{fontSize: '2rem'}}>
-                Đăng ký
-            </Typography.Title>
-            <Form
-                style={{
-                    minWidth: '50%',    
-                }}
-                initialValues={{
-                    remember: true,
-                }}
-                onFinish={onFinish}
-                layout='vertical'
-            >
-                <Form.Item
-                    label="Tài khoản:"
-                    name="username"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Không được để trống',
-                        },
-                    ]}
+            <div style={{
+                boxSizing: 'border-box',
+                width: '60%',
+                height: '100%',
+            }}>
+                <img
+                    src='https://bcp.cdnchinhphu.vn/Uploaded/hoangtrongdien/2020_04_07/thu%20vien.jpg'
+                    style={{width:'100%', height: '100%'}}
+                />
+            </div>
+            <div style={{
+                margin: '2rem 0 1rem 3rem',
+                maxWidth: '30%'
+            }}>
+                <Typography.Title style={{fontSize: '2rem', margin: '3rem 0'}}>
+                    Register
+                </Typography.Title>
+                <Form
+                    style={{
+                        minWidth: '50%',    
+                    }}
+                    initialValues={{
+                        remember: true,
+                    }}
+                    onFinish={onFinish}
+                    layout='vertical'
                 >
-                    <Input prefix={<UserOutlined />} placeholder="Username" />
-                </Form.Item>
-                <Form.Item
-                    label="Mật khẩu:"
-                    name="password"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Không được để trống',
-                        },
-                    ]}
-                >   
-                    <Input.Password
-                        prefix={<LockOutlined />}
-                        type="password"
-                        placeholder="Password"
-                    />
-                </Form.Item>
-                <Form.Item
-                    label="Email:"
-                    name="email"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Không được để trống',
-                        },
-                    ]}
-                >
-                    <Input placeholder="Email"/>
-                </Form.Item>
-                <Form.Item
-                    label="Ngày sinh:"
-                    name="dob"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Không được để trống',
-                        },
-                    ]}
-                >
-                    <DatePicker format={dateFormat} style={{minWidth: '20rem'}} onChange={handleDate}/>
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" style={{width: '100%'}}>
-                        Register
-                    </Button>
-                </Form.Item>
-            </Form>
+                    <Form.Item
+                        label="Username:"
+                        name="username"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Không được để trống',
+                            },
+                        ]}
+                    >
+                        <Input prefix={<UserOutlined />} placeholder="Username" />
+                    </Form.Item>
+                    <Form.Item
+                        label="Password:"
+                        name="password"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Không được để trống',
+                            },
+                        ]}
+                    >   
+                        <Input.Password
+                            prefix={<LockOutlined />}
+                            type="password"
+                            placeholder="Password"
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        label="Email:"
+                        name="email"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Không được để trống',
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Email"/>
+                    </Form.Item>
+                    <Form.Item
+                        label="Birthday:"
+                        name="dob"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Không được để trống',
+                            },
+                        ]}
+                    >
+                        <DatePicker format={dateFormat} style={{minWidth: '20rem'}} onChange={handleDate}/>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            style={{
+                                width: '100%',
+                                height: '2.3rem',
+                                marginBottom: '2rem'
+                            }}
+                        >
+                            Register
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </div>
         </div>
     );
 }

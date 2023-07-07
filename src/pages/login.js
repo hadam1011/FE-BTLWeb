@@ -50,6 +50,7 @@ const Login = () => {
                 overflow: 'hidden'
             }}
         >   
+            {contextHolder}
             <div style={{
                 boxSizing: 'border-box',
                 width: '60%',
@@ -64,7 +65,6 @@ const Login = () => {
                 margin: '2rem 0 1rem 3rem',
                 maxWidth: '30%'
             }}>
-                {contextHolder}
                 <Typography.Title style={{fontSize: '2rem', margin: '3rem 0'}}>
                     Login
                 </Typography.Title>

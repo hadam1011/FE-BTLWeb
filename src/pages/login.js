@@ -65,7 +65,7 @@ const Login = () => {
                 margin: '2rem 0 1rem 3rem',
                 maxWidth: '30%'
             }}>
-                <Typography.Title style={{fontSize: '2rem', margin: '3rem 0'}}>
+                <Typography.Title style={{fontSize: '2rem', margin: '1.5rem 0'}}>
                     Login
                 </Typography.Title>
                 <Typography.Text style={{fontSize: '1rem', fontWeight: 'bold'}}>

@@ -1,5 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, DatePicker, Form, Input, Typography, notification } from 'antd';
+import { Button, DatePicker, Form, Input, Typography, notification, Divider } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as userService from '../services/userServices'
@@ -66,7 +66,7 @@ const Register = () => {
                 display: 'flex',
                 boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
                 borderRadius: '2rem',
-                overflow: 'hidden'
+                overflow: 'hidden',
             }}
         >   
             {contextHolder}
@@ -82,14 +82,24 @@ const Register = () => {
             </div>
             <div style={{
                 margin: '2rem 0 1rem 3rem',
-                maxWidth: '30%'
+                maxWidth: '35%',
+                overflowY: 'scroll',
             }}>
-                <Typography.Title style={{fontSize: '2rem', margin: '3rem 0'}}>
+                <Typography.Title style={{fontSize: '2rem', margin: '1.5rem 0'}}>
                     Register
                 </Typography.Title>
+                <Typography.Text style={{fontSize: '1rem', fontWeight: 'bold'}}>
+                    Manage your account
+                </Typography.Text>
+                <div>
+                    <Typography.Text type='secondary'>
+                        Let's get you all set up so you can verify your personal account and begin setting up your profile
+                    </Typography.Text>
+                </div>
+                <Divider />
                 <Form
                     style={{
-                        minWidth: '50%',    
+                        maxWidth: '70%',    
                     }}
                     initialValues={{
                         remember: true,
@@ -147,7 +157,7 @@ const Register = () => {
                             },
                         ]}
                     >
-                        <DatePicker format={dateFormat} style={{minWidth: '20rem'}} onChange={handleDate}/>
+                        <DatePicker format={dateFormat} style={{minWidth: '18rem'}} onChange={handleDate}/>
                     </Form.Item>
                     <Form.Item>
                         <Button
@@ -156,13 +166,21 @@ const Register = () => {
                             style={{
                                 width: '100%',
                                 height: '2.3rem',
-                                marginBottom: '2rem'
                             }}
                         >
                             Register
                         </Button>
                     </Form.Item>
                 </Form>
+                <Typography.Text style={{fontSize: '1rem'}}>
+                    {`Already have an account? `}
+                </Typography.Text>
+                <Typography.Link
+                    href='http://localhost:3000/login'
+                    style={{ fontSize: '1rem' }}
+                >
+                    Log in
+                </Typography.Link>
             </div>
         </div>
     );

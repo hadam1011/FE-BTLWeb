@@ -32,8 +32,13 @@ div.ant-card-cover{
 }
 
 .book-image {
-    height: 25rem;
+    height: 20rem;
     width: auto !important;
+}
+
+.carousel-container {
+    max-width: 80%;
+    margin: 0 auto;
 }
 
 @media only screen and (max-width: 765px) {

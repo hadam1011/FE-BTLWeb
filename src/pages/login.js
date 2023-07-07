@@ -1,5 +1,5 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Typography, notification } from 'antd';
+import { Button, Divider, Form, Input, Typography, notification } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as userService from '../services/userServices';
@@ -37,73 +37,109 @@ const Login = () => {
         }
     };
 
-    const handleClickRegister = () => {
-        navigate('/register');
-    }
-
     return (
         <div
             style={{
-                width: '40rem',
-                height: '50vh',
+                boxSizing: 'border-box',
+                width: '80%',
+                height: '80vh',
+                margin: '2rem auto 0',
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                margin: '10rem 10rem 10rem 28rem',
                 boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+                borderRadius: '2rem',
+                overflow: 'hidden'
             }}
         >   
-            {contextHolder}
-            <Typography.Title style={{fontSize: '2rem'}}>
-                Đăng nhập
-            </Typography.Title>
-            <Form
-                name="normal_login"
-                style={{
-                    minWidth: '50%',    
-                }}
-                initialValues={{
-                    remember: true,
-                }}
-                onFinish={onFinish}
-            >
-                <Form.Item
-                    name="username"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Không được để trống',
-                        },
-                    ]}
+            <div style={{
+                boxSizing: 'border-box',
+                width: '60%',
+                height: '100%',
+            }}>
+                <img
+                    src='https://bcp.cdnchinhphu.vn/Uploaded/hoangtrongdien/2020_04_07/thu%20vien.jpg'
+                    style={{width:'100%', height: '100%'}}
+                />
+            </div>
+            <div style={{
+                margin: '2rem 0 1rem 3rem',
+                maxWidth: '30%'
+            }}>
+                {contextHolder}
+                <Typography.Title style={{fontSize: '2rem', margin: '3rem 0'}}>
+                    Login
+                </Typography.Title>
+                <Typography.Text style={{fontSize: '1rem', fontWeight: 'bold'}}>
+                    Login to your account
+                </Typography.Text>
+                <div>
+                    <Typography.Text type='secondary'>
+                        Thank you gor get back to our website, lets access our the best recommendation for you
+                    </Typography.Text>
+                </div>
+                <Divider />
+                <Form
+                    layout='vertical'
+                    name="normal_login"
+                    style={{
+                        minWidth: '50%',    
+                    }}
+                    initialValues={{
+                        remember: true,
+                    }}
+                    onFinish={onFinish}
                 >
-                    <Input prefix={<UserOutlined />} placeholder="Username" />
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[
-                        {
-                        required: true,
-                        message: 'Không được để trống',
-                        },
-                    ]}
-                >
-                    <Input.Password
-                        prefix={<LockOutlined />}
-                        type="password"
-                        placeholder="Password"
-                    />
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" style={{width: '100%'}}>
-                        Log in
-                    </Button>
-                    <div style={{textAlign: 'center'}}>Or</div>
-                    <Button type="primary" style={{width: '100%'}} onClick={handleClickRegister}>
-                        Register
-                    </Button>
-                </Form.Item>
-            </Form>
+                    <Form.Item
+                        label="Username"
+                        name="username"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Không được để trống',
+                            },
+                        ]}
+                    >
+                        <Input prefix={<UserOutlined />} placeholder="Username" />
+                    </Form.Item>
+                    <Form.Item
+                        label="Password"
+                        name="password"
+                        rules={[
+                            {
+                            required: true,
+                            message: 'Không được để trống',
+                            },
+                        ]}
+                    >
+                        <Input.Password
+                            prefix={<LockOutlined />}
+                            type="password"
+                            placeholder="Password"
+                        />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            style={{
+                                width: '100%',
+                                height: '2.3rem',
+                                marginBottom: '2rem'
+                            }}
+                        >
+                            Sign in
+                        </Button>
+                        <Typography.Text style={{fontSize: '1rem'}}>
+                            {`Don't have an account yet? `}
+                        </Typography.Text>
+                        <Typography.Link
+                            style={{ fontSize: '1rem' }}
+                            href='http://localhost:3000/register'
+                        >
+                            Join us
+                        </Typography.Link>
+                    </Form.Item>
+                </Form>
+            </div>
         </div>
     );
 }

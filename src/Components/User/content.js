@@ -1,7 +1,8 @@
-import { Breadcrumb, Row, Pagination } from 'antd';
+import { Breadcrumb, Row, Pagination, Typography } from 'antd';
 import CardBook from "./cardBook";
 import { HomeOutlined } from '@ant-design/icons'
 import { useState } from 'react';
+import SliderItem from './sliderItem';
 
 const Contents = ({ bookList }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,6 +40,10 @@ const Contents = ({ bookList }) => {
                     }
                 ]}
             />
+            <SliderItem bookList={bookList} />
+            <Typography.Title style={{fontSize: '2rem'}}> 
+                All books
+            </Typography.Title>
             <Row gutter={[16, 16]} >
                 {renderCard()}
             </Row>

@@ -2,7 +2,7 @@ import { Breadcrumb, Row, Pagination, Typography } from 'antd';
 import CardBook from "./cardBook";
 import { HomeOutlined } from '@ant-design/icons'
 import { useState } from 'react';
-import SliderItem from './sliderItem';
+import CarouselItem from './carouselItem';
 
 const Contents = ({ bookList }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -40,8 +40,11 @@ const Contents = ({ bookList }) => {
                     }
                 ]}
             />
-            <SliderItem bookList={bookList} />
-            <Typography.Title style={{fontSize: '2rem'}}> 
+            <Typography.Title style={{fontSize: '1.5rem', fontWeight: 'bold'}}>
+                Famous Author
+            </Typography.Title>
+            <CarouselItem />
+            <Typography.Title style={{fontSize: '1.5rem', fontWeight: 'bold'}}> 
                 All books
             </Typography.Title>
             <Row gutter={[16, 16]} >

@@ -7,8 +7,10 @@
 }
 
 .user-menu-item {
-    font-size: 1.5rem;
-    margin: 1rem 0 0 1rem;
+    font-size: 1rem;
+    min-width: 50%;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .mobile-nav {
@@ -37,8 +39,20 @@ div.ant-card-cover{
 }
 
 .carousel-container {
-    max-width: 80%;
-    margin: 0 auto;
+    width: 100%;
+    height: 15rem;
+}
+
+.flex-box-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-navbar {
+    margin: 0 10rem;
+    display: flex;
+    justify-content: space-between;
 }
 
 @media only screen and (max-width: 765px) {

@@ -1,4 +1,4 @@
-import { Menu, Modal, Input, Form, DatePicker, notification, Drawer } from 'antd';
+import { Menu, Modal, Input, Form, DatePicker, notification, Drawer, Typography, Space } from 'antd';
 import { useEffect, useState } from 'react';
 import {
     HomeOutlined,
@@ -6,7 +6,8 @@ import {
     ExclamationCircleOutlined,
     ShoppingCartOutlined,
     UserOutlined,
-    MenuOutlined
+    MenuOutlined,
+    ReadOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -53,42 +54,26 @@ const NavBar = ({ setBookList }) => {
     }
 
     const items = [
-    {
-        label: 'Home',
-        key: 'home',
-        icon: <HomeOutlined />
-    },
-    {
-        label: 'Cart',
-        key: 'cart',
-        icon: <ShoppingCartOutlined />
-    },
-    {
-        label: 'Logout',
-        key:  'logout',
-        icon: <LogoutOutlined />
-    },
-    {
-        label: 'Account',   
-        key:  'account',
-        icon: <UserOutlined />
-    },
-    {
-        key:  'search',
-        label: (
-            <div className='mobile-hidden'>
-                <Input.Search
-                    allowClear
-                    onChange={handleSearch}
-                    style={{
-                        minWidth: '15rem',
-                        marginTop: '1rem',
-                    }}  
-                />
-            </div>
-        ),
-        disabled: true
-    },
+        {
+            label: 'Home',
+            key: 'home',
+        },
+        {
+            label: 'Products',
+            key: 'products',
+        },
+        {
+            label: 'Category',
+            key:  'category',
+        },
+        {
+            label: 'Contact',   
+            key:  'contact',
+        },
+        {
+            label: 'About us',   
+            key:  'about us',
+        },
     ]
 
     const handleClick = (e) => {
@@ -138,38 +123,24 @@ const NavBar = ({ setBookList }) => {
         <div>
             {contextHolder}
             {apiContextHolder}
-            <div className="mobile-hidden">
-                <Menu
-                    onClick={handleClick}
-                    selectedKeys={[current]} 
-                    mode="horizontal"
-                    items={items}
-                    style={{display: "flex", alignItems: 'center', justifyContent: 'center'}}
-                />
-            </div>
-            <div className="mobile-visible">
-                <div className="mobile-nav user-menu-item">
-                    <MenuOutlined
-                        onClick={() => setIsDrawerOpen(true)}
-                    />
-                    <Input.Search
-                        onChange={handleSearch}
-                        allowClear
-                        className='search-item' />
+            <div className='user-navbar'>
+                <div className='flex-box-center'>
+                    <ReadOutlined style={{fontSize: '2rem'}}/>
+                    <Typography.Title style={{ fontSize: '2rem', margin: '0 0 0.5rem'}}>
+                        BookStore
+                    </Typography.Title>
                 </div>
-                <Drawer
-                    title="Menu"
-                    placement="right"
-                    onClose={() => setIsDrawerOpen(false)}
-                    open={isDrawerOpen}
-                >
-                    <Menu
-                        onClick={handleClick}
-                        selectedKeys={[current]} 
-                        mode="vertical"
-                        items={items}
-                    />
-                </Drawer>
+                <Menu
+                    items={items}
+                    mode='horizontal'
+                    className='user-menu-item'
+                />
+                <div>
+                    <Space size="middle">
+                        <ShoppingCartOutlined style={{ fontSize: '1rem' }}/>
+                        <UserOutlined style={{ fontSize: '1rem' }}/>
+                    </Space>
+                </div>
             </div>
             <Modal
                 open={isOpen}

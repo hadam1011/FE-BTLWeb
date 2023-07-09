@@ -63,10 +63,6 @@ const NavBar = ({ setBookList }) => {
             key: 'products',
         },
         {
-            label: 'Category',
-            key:  'category',
-        },
-        {
             label: 'Contact',   
             key:  'contact',
         },

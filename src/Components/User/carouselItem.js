@@ -12,6 +12,9 @@ const CarouselItem = () => {
 
     return (
         <>
+            <Typography.Title style={{fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem'}}>
+                Famous Author
+            </Typography.Title>
             <Carousel autoplay className='carousel-container'>
                 <div>
                     <div style={contentStyle}>

@@ -31,9 +31,10 @@ const CardBook = ({ book }) => {
             <Col xl={4} lg={6} md={8} sm={12} xs={24}>
                 <Card
                     hoverable
+                    bordered={false}
                     cover={<img src={book.avatar} className='book-image' />}
                     onClick={handleClickCard}
-                    bodyStyle={{padding: '0.8rem', height: '6rem'}}
+                    bodyStyle={{padding: '0.8rem', height: '7rem'}}
                 >
                     <div
                         style={{
@@ -53,7 +54,7 @@ const CardBook = ({ book }) => {
                             {`${book.title} - ${book.author}`}
                         </Typography.Text>
                     </div>
-                    <Space>
+                    <Space style={{marginBottom: '0.2rem'}}>
                         {star.toString() !== 'NaN' ? star : 0}
                         <StarFilled style={{ color: 'yellow', fontSize: '0.9rem' }} />
                         <span>
@@ -68,9 +69,12 @@ const CardBook = ({ book }) => {
                         </span>
                         <span style={{ border: '1px solid gray' }} />
                         <Typography.Text style={{fontSize: '0.9rem'}}>
-                            {`Đã bán: ${book.sold}`}
+                            {`Sold: ${book.sold}`}
                         </Typography.Text>
                     </Space>
+                    <Typography.Text style={{fontSize: '1rem', fontWeight: 'bold'}}>
+                        {`${book.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}đ
+                    </Typography.Text>
                 </Card>
             </Col>
         </>

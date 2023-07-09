@@ -4,6 +4,7 @@ import NavBar from '../Components/User/navBar'
 import { useLocation, Outlet, useNavigate } from 'react-router-dom'
 import Contents from '../Components/User/content'
 import * as bookService from '../services/bookServices'
+import UserFooter from '../Components/User/footer';
 
 const {Header, Content, Footer} = Layout
 
@@ -43,12 +44,8 @@ const UserHomePage = () => {
                     {location.pathname === '/' && <Contents bookList={bookList}/>}
                     <Outlet />
                 </Content>
-                <Footer
-                    style={{
-                        textAlign: 'center',
-                    }}
-                >
-                    ©2023 Created by Đàm Trọng Ngọc Hà - B20DCCN211
+                <Footer>
+                    <UserFooter />
                 </Footer>
             </Layout>
         </div>

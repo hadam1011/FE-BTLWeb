@@ -101,6 +101,28 @@ div.ant-card-cover{
     transform: scale(1.2);
 }
 
+.footer-container {
+    background-color: #01110e;
+    display: flex;
+    justify-content: space-around;
+    color: #aab2b1;
+    height: 20rem;
+    font-size: 1rem;
+}
+
+.footer-content-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 3rem 0;
+}
+
+.footer-title {
+    color: #aab2b1 !important; 
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+}
+
 @media only screen and (max-width: 765px) {
     .mobile-visible {
         display: block;

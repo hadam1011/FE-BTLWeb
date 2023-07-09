@@ -55,6 +55,52 @@ div.ant-card-cover{
     justify-content: space-between;
 }
 
+.salesText-container {
+    position: absolute;
+    font-weight: bold;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    border-radius: 2rem 0 0 2rem
+}
+
+.salesText-box {
+    margin: 1rem 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 40%;
+}
+
+.salesOff-text {
+    font-size: 2rem;
+    color: white;
+}
+
+.shopNow-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: black;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    width: 6rem;
+    height: 2rem
+}
+
+.zoom-effect {
+    overflow: hidden;
+}
+
+.zoom-effect .shopNow-box {
+    transition: transform 0.3s ease;
+}
+
+.zoom-effect:hover .shopNow-box {
+    transform: scale(1.2);
+}
+
 @media only screen and (max-width: 765px) {
     .mobile-visible {
         display: block;

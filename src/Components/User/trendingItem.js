@@ -14,8 +14,8 @@ const TrendingItem = ({ bookList }) => {
     }, [bookList])
 
     return (
-        <>
-            <Typography.Title style={{fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem'}}>
+        <div style={{position: 'relative'}}>
+            <Typography.Title style={{fontSize: '1.5rem', fontWeight: 'bold', margin: '1.5rem 0'}}>
                 Trending now
             </Typography.Title>
             <Row gutter={[16, 16]}>
@@ -30,12 +30,13 @@ const TrendingItem = ({ bookList }) => {
                 fontSize: '1rem',
                 fontWeight: 'revert',
                 position: 'absolute',
-                top: '32rem'
+                left: '0',
+                bottom: '0'
             }}>
                 {'View all product '}
                 <RightOutlined />
             </Typography.Link>
-        </>
+        </div>
     )
 }
 

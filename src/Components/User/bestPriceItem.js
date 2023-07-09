@@ -14,8 +14,8 @@ const BestPriceItems = ({ bookList }) => {
     }, [bookList])
 
     return (
-        <>
-            <Typography.Title style={{fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem'}}>
+        <div style={{position: 'relative'}}>
+            <Typography.Title style={{fontSize: '1.5rem', fontWeight: 'bold', margin: '1.5rem 0'}}>
                 Best price for you
             </Typography.Title>
             <Row gutter={[16, 16]}>
@@ -30,12 +30,13 @@ const BestPriceItems = ({ bookList }) => {
                 fontSize: '1rem',
                 fontWeight: 'revert',
                 position: 'absolute',
-                top: '62rem'
+                left: '0',
+                bottom: '0',
             }}>
                 {'View all product '}
                 <RightOutlined />
             </Typography.Link>
-        </>
+        </div>
     )
 }
 

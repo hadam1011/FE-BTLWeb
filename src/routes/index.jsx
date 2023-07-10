@@ -9,6 +9,7 @@ import Cart from "../pages/cart";
 import Accounts from "../pages/accounts";
 import PageNotFound from "../Components/Error/404";
 import NotAuthorPage from "../Components/Error/403";
+import Products from "../Components/User/products";
 
 const RouterPages = () => {
     return (
@@ -17,6 +18,7 @@ const RouterPages = () => {
                 <Route path="/" element={<UserHomePage />} >
                     <Route path="/book-detail/:bookcode" element={<BookDetail />} />
                     <Route path="/cart" element={<Cart />} />
+                    <Route path="/products" element={<Products />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register /> } />

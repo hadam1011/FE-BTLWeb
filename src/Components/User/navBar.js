@@ -1,26 +1,22 @@
-import { Menu, Modal, Input, Form, DatePicker, notification, Typography, Space } from 'antd';
-import { useEffect, useState } from 'react';
+import { Menu, Modal, Input, Form, DatePicker, notification, Typography, Space, Dropdown } from 'antd';
+import { useState } from 'react';
 import {
-    HomeOutlined,
     LogoutOutlined,
-    ExclamationCircleOutlined,
     ShoppingCartOutlined,
     UserOutlined,
-    MenuOutlined,
-    ReadOutlined
+    ReadOutlined,
+    SettingOutlined,
+    ExclamationCircleOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import * as userService from '../../services/userServices';
-import * as bookService from '../../services/bookServices';
 import '../../App.css';
 
-const NavBar = ({ setBookList }) => {
+const NavBar = () => {
     const navigate = useNavigate();
     const [current, setCurrent] = useState('home');
-    const [bookData, setBookData] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const user = JSON.parse(localStorage.getItem('user'));
     const [date, setDate] = useState(user === null ? '' : user.dob);
     const [form] = Form.useForm();
@@ -28,31 +24,23 @@ const NavBar = ({ setBookList }) => {
     const [api, apiContextHolder] = notification.useNotification();
     const dateFormat = 'YYYY/MM/DD';
     
-    const callApi = async () => {
-        const data = await bookService.getAllBook();
-        setBookList(data);
-        setBookData(data);
-    }
-
-    useEffect(() => {
-        callApi();
-    }, [])
-
     const handleDate = (date, dateString) => {
         setDate(dateString.replace(/\//g, "-"));          
     }
 
-    const handleSearch = (e) => {
-        const keywords = e.target.value.toLowerCase();
-        if (keywords.length === 0) callApi();
-
-        var newList = bookData.filter((book) => {
-            return book.title.toLowerCase().includes(keywords) ||
-                book.author.toLowerCase().includes(keywords);
-        });
-        setBookList(newList);
-    }
-
+    const dropDownItems = [
+        {
+            label: 'Account',
+            key: 'account',
+            icon: <SettingOutlined />
+        },
+        {
+            label: 'Logout',
+            key: 'logout',
+            icon: <LogoutOutlined />
+        }
+    ];
+    
     const items = [
         {
             label: 'Home',
@@ -72,26 +60,29 @@ const NavBar = ({ setBookList }) => {
         },
     ]
 
-    const handleClick = (e) => {
-        if (e.key === 'home') {
-            setCurrent(e.key);
-            navigate('/');
-        } else if (e.key === 'logout'){
+    const handleClickDropdownItem = (item) => {
+        if (item.key === 'logout') {
             modal.confirm({
                 title: "Đăng xuất",
                 content: "Bạn muốn đăng xuất?",
                 icon: <ExclamationCircleOutlined />,
                 onOk: () => {
-                    window.localStorage.clear();
-                    navigate("/login");
+                  window.localStorage.clear();
+                  navigate("/login");
                 },
-            });
-        } else if (e.key === 'cart') {
-            setCurrent(e.key);
-            navigate('/cart');
-        } else if (e.key === 'account') {
+              });
+        } else if (item.key === 'account') {
             setIsOpen(true);
         }
+    }
+
+    const handleClick = (e) => {
+        if (e.key === 'home') {
+            navigate('/');
+        } else if (e.key === 'products'){
+            navigate('/products');
+        } 
+        setCurrent(e.key);
     }
 
     const handleUpdateAccount = (data) => {
@@ -128,13 +119,23 @@ const NavBar = ({ setBookList }) => {
                 </div>
                 <Menu
                     items={items}
+                    selectedKeys={current}
                     mode='horizontal'
                     className='user-menu-item'
+                    onClick={handleClick}
                 />
                 <div>
                     <Space size="middle">
-                        <ShoppingCartOutlined style={{ fontSize: '1rem' }}/>
-                        <UserOutlined style={{ fontSize: '1rem' }}/>
+                        <ShoppingCartOutlined style={{ fontSize: '1rem' }} />
+                        <Dropdown
+                            menu={{
+                                items: dropDownItems,
+                                selectable: true,
+                                onClick: handleClickDropdownItem,
+                            }}
+                        >
+                            <UserOutlined style={{ fontSize: '1rem' }} />
+                        </Dropdown>
                     </Space>
                 </div>
             </div>

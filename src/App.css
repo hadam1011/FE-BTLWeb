@@ -123,6 +123,10 @@ div.ant-card-cover{
     font-weight: bold !important;
 }
 
+.ant-layout-footer {
+    padding: 0;
+}
+
 @media only screen and (max-width: 765px) {
     .mobile-visible {
         display: block;

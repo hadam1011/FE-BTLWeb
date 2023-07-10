@@ -1,26 +1,19 @@
 import { Layout } from 'antd'
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NavBar from '../Components/User/navBar'
 import { useLocation, Outlet, useNavigate } from 'react-router-dom'
 import Contents from '../Components/User/content'
-import * as bookService from '../services/bookServices'
 import UserFooter from '../Components/User/footer';
+import '../App.css';
 
 const {Header, Content, Footer} = Layout
 
 const UserHomePage = () => {
     let location = useLocation();
     const navigate = useNavigate();
-    const [bookList, setBookList] = useState([]);
     const user = JSON.parse(localStorage.getItem('user'));
 
-    const callApi = async () => {
-        const data = await bookService.getAllBook();
-        setBookList(data);
-    }
-
     useEffect(() => {
-        callApi();
         if (user === null) {
             navigate('/login');
         }
@@ -38,10 +31,10 @@ const UserHomePage = () => {
                         backgroundColor: 'white'
                     }}
                 >
-                    <NavBar setBookList={setBookList} />
+                    <NavBar />
                 </Header>
                 <Content style={{ margin: '1rem 10rem', minHeight: '100vh' }}>  
-                    {location.pathname === '/' && <Contents bookList={bookList}/>}
+                    {location.pathname === '/' && <Contents />}
                     <Outlet />
                 </Content>
                 <Footer>

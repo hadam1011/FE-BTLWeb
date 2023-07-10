@@ -1,9 +1,11 @@
 import { Typography, Row, Col, Image } from 'antd';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { RightOutlined } from '@ant-design/icons'
 import CardBook from './cardBook';
+import { AppContext } from '../../context/appContext';
 
-const BestPriceItems = ({ bookList }) => {
+const BestPriceItems = () => {
+    const { bookList } = useContext(AppContext);
     const [trendingList, setTrendingList] = useState(bookList);
 
     useEffect(() => {

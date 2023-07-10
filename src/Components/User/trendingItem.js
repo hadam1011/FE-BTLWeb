@@ -17,7 +17,7 @@ const TrendingItem = () => {
 
     return (
         <div style={{position: 'relative'}}>
-            <Typography.Title style={{fontSize: '1.5rem', fontWeight: 'bold', margin: '1.5rem 0'}}>
+            <Typography.Title className="title-style">
                 Trending now
             </Typography.Title>
             <Row gutter={[16, 16]}>

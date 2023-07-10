@@ -55,6 +55,12 @@ div.ant-card-cover{
     justify-content: space-between;
 }
 
+.title-style {
+    font-size: 1.5rem !important; 
+    font-weight: bold !important; 
+    margin: 1.5rem 0;
+}
+
 .salesText-container {
     position: absolute;
     font-weight: bold;
@@ -125,6 +131,13 @@ div.ant-card-cover{
 
 .ant-layout-footer {
     padding: 0;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 @media only screen and (max-width: 765px) {

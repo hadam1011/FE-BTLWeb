@@ -16,7 +16,7 @@ export const AppProvider = ({ children }) => {
         fetchBook();
     }, [])
 
-    const props = {book, setBook, disabled, setDisabled, bookList};
+    const props = {book, setBook, disabled, setDisabled, bookList, setBookList};
 
     return (
         <AppContext.Provider value={props} >

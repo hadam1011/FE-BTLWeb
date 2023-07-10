@@ -13,7 +13,7 @@ export const AppProvider = ({ children }) => {
             const data = await bookService.getAllBook();
             setBookList(data);
         }
-        fetchBook();
+        fetchBook();    
     }, [])
 
     const props = {book, setBook, disabled, setDisabled, bookList, setBookList};

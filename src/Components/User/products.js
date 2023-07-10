@@ -27,6 +27,10 @@ const Products = () => {
         callApi();
     }, [])
 
+    useEffect(() => {
+        setDisplayList(bookList);
+    }, [bookList])
+
     const handleChangePagination = (page, pageSize) => {
         setCurrentPage(page);
     };

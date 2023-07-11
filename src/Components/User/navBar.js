@@ -126,7 +126,10 @@ const NavBar = () => {
                 />
                 <div>
                     <Space size="middle">
-                        <ShoppingCartOutlined style={{ fontSize: '1rem' }} />
+                        <ShoppingCartOutlined
+                            style={{ fontSize: '1rem' }}
+                            onClick={() => navigate('/cart')}
+                        />
                         <Dropdown
                             menu={{
                                 items: dropDownItems,

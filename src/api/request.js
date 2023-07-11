@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const request = axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: 'https://book-store-be-7nps.onrender.com/',
 })
 
 export const get = async (path) => {

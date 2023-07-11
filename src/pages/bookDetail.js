@@ -1,5 +1,5 @@
 import { Row, Col, Typography, Rate, Space, Button, Input, Divider, Popconfirm, notification, Breadcrumb } from "antd";
-import { SendOutlined, HomeOutlined, BookOutlined } from "@ant-design/icons"
+import { SendOutlined, ProfileOutlined, BookOutlined } from "@ant-design/icons"
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import Comment from "../Components/User/comment";
@@ -141,8 +141,8 @@ const BookDetail = () => {
                     {
                         title: (
                             <>
-                                <HomeOutlined />
-                                <span>Home</span>                        
+                                <ProfileOutlined />
+                                <span>Products</span>                        
                             </>
                         )
                     },

@@ -4,7 +4,7 @@ import '../../App.css';
 
 const UserFooter = () => {
     return (
-        <div className='footer-container'>
+        <div className='footer-container' id='footer'>
             <div className='footer-content-box'>
                 <Space className='footer-title'>
                     <ReadOutlined />

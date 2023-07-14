@@ -1,4 +1,4 @@
-import { Row, Col, Typography, Rate, Space, Button, Input, Divider, Popconfirm, notification, Breadcrumb } from "antd";
+import { Row, Col, Typography, Rate, Space, Button, Input, Divider, Popconfirm, notification, Breadcrumb, Skeleton } from "antd";
 import { SendOutlined, ProfileOutlined, BookOutlined } from "@ant-design/icons"
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
@@ -13,6 +13,7 @@ const BookDetail = () => {
     const [api, contextHolder] = notification.useNotification();
     const [book, setBook] = useState({});
     const [vote, setVote] = useState(0);
+    const [loading, setLoading] = useState(true);
     const [count, setCount] = useState(1);
     const [rate, setRate] = useState(0);
     const [userVote, setUserVote] = useState(undefined);
@@ -49,6 +50,7 @@ const BookDetail = () => {
             setCommentList(comments);
 
             handleStarDisplay(bookData.bookcode);
+            setLoading(false);
         }
         callApi();
     }, [])
@@ -156,128 +158,133 @@ const BookDetail = () => {
                     }
                 ]}
             />
-            <Row style={{background: '#fff'}}>
-                <Col
-                    xl={8}
-                    md={9}
-                    sm={24}
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
-                    <img src={book.avatar} height='350rem' alt=""/>
-                </Col>
-                <Col
-                    xl={15}
-                    lg={14}
-                    md={12}
-                    style={{
-                        margin: '1rem 0 0 1rem'
-                    }}
-                >
-                    <Typography.Text>
-                        {`Tác giả: ${book.author}`}
-                    </Typography.Text><br />
-                    <Typography.Text>
-                        {`Thể loại: ${book.category}`}
-                    </Typography.Text>
-                    <Typography.Title style={{margin: '0'}}>
-                        {book.title}
-                    </Typography.Title>
-                    <div style={{margin: '0.8rem 0'}}>
-                        <Space size="small">    
-                            <Rate disabled value={rate} style={{fontSize: '1.5rem'}}/>
+            <Skeleton
+                loading={loading}
+                active
+            >
+                <Row style={{background: '#fff'}}>
+                    <Col
+                        xl={8}
+                        md={9}
+                        sm={24}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <img src={book.avatar} height='350rem' alt=""/>
+                    </Col>
+                    <Col
+                        xl={15}
+                        lg={14}
+                        md={12}
+                        style={{
+                            margin: '1rem 0 0 1rem'
+                        }}
+                    >
+                        <Typography.Text>
+                            {`Tác giả: ${book.author}`}
+                        </Typography.Text><br />
+                        <Typography.Text>
+                            {`Thể loại: ${book.category}`}
+                        </Typography.Text>
+                        <Typography.Title style={{margin: '0'}}>
+                            {book.title}
+                        </Typography.Title>
+                        <div style={{margin: '0.8rem 0'}}>
+                            <Space size="small">    
+                                <Rate disabled value={rate} style={{fontSize: '1.5rem'}}/>
+                                <Typography.Text
+                                    style={{
+                                        fontSize: '0.8rem',
+                                        fontStyle: 'italic',
+                                        opacity: '0.8'
+                                    }}
+                                >
+                                    {`(${vote} Đánh giá)`}
+                                </Typography.Text>
+                                <span style={{border: '1px solid gray', height: '1.5rem', display: 'block'}}/>
+                                <Typography.Text>
+                                    {`Số lượng đã bán: ${book.sold}`}
+                                </Typography.Text>
+                            </Space>
+                        </div>
+                        <div>
                             <Typography.Text
                                 style={{
-                                    fontSize: '0.8rem',
-                                    fontStyle: 'italic',
-                                    opacity: '0.8'
+                                    fontSize: '3rem'
                                 }}
                             >
-                                {`(${vote} Đánh giá)`}
+                                {`${book.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}đ
                             </Typography.Text>
-                            <span style={{border: '1px solid gray', height: '1.5rem', display: 'block'}}/>
-                            <Typography.Text>
-                                {`Số lượng đã bán: ${book.sold}`}
+                        </div>
+                        <div style={{marginBottom: '1rem'}}> 
+                            <Typography.Text>Số lượng </Typography.Text>    
+                        </div>
+                        <div>
+                            <ChooseQuantity count={count} setCount={setCount}/>
+                        </div>
+                        <Popconfirm
+                            title="Đặt mua quyển sách này?"
+                            onConfirm={handleClickBuy}
+                        >
+                            <Button
+                                type="primary"
+                                style={{ margin: '0.9rem 0', minWidth: '11rem' }}
+                            >
+                                Chọn Mua
+                            </Button>
+                        </Popconfirm>
+                        <div style={{ marginBottom: '1rem', marginRight: '1rem' }}>
+                            <Divider />
+                            <Typography.Text strong style={{ fontSize: '1rem'}}>Mô tả sách: </Typography.Text>
+                            <Typography.Text>{book.description}</Typography.Text>
+                        </div>
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: '0.9rem', background: '#fff' }}>
+                    <Col style={{ margin: '0 0 0.9rem 0.9rem'}} span={23}>
+                        <div>
+                            <Typography.Text
+                                strong
+                                style={{ fontSize: '1.4rem' }}
+                            >
+                                Đánh giá - Nhận xét
                             </Typography.Text>
-                        </Space>
-                    </div>
-                    <div>
-                        <Typography.Text
-                            style={{
-                                fontSize: '3rem'
-                            }}
-                        >
-                            {`${book.price}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}đ
-                        </Typography.Text>
-                    </div>
-                    <div style={{marginBottom: '1rem'}}> 
-                        <Typography.Text>Số lượng </Typography.Text>    
-                    </div>
-                    <div>
-                        <ChooseQuantity count={count} setCount={setCount}/>
-                    </div>
-                    <Popconfirm
-                        title="Đặt mua quyển sách này?"
-                        onConfirm={handleClickBuy}
-                    >
-                        <Button
-                            type="primary"
-                            style={{ margin: '0.9rem 0', minWidth: '11rem' }}
-                        >
-                            Chọn Mua
-                        </Button>
-                    </Popconfirm>
-                    <div style={{ marginBottom: '1rem', marginRight: '1rem' }}>
-                        <Divider />
-                        <Typography.Text strong style={{ fontSize: '1rem'}}>Mô tả sách: </Typography.Text>
-                        <Typography.Text>{book.description}</Typography.Text>
-                    </div>
-                </Col>
-            </Row>
-            <Row style={{ marginTop: '0.9rem', background: '#fff' }}>
-                <Col style={{ margin: '0 0 0.9rem 0.9rem'}} span={23}>
-                    <div>
-                        <Typography.Text
-                            strong
-                            style={{ fontSize: '1.4rem' }}
-                        >
-                            Đánh giá - Nhận xét
-                        </Typography.Text>
-                    </div>
-                    <Rate
-                        value={userVote === undefined ? 0 : userVote.star}
-                        onChange={handleClickRate}
-                    />
-                    <div style={{ marginBottom: '0.5rem' }}>
-                        <Typography.Text>Bình luận</Typography.Text>
-                    </div>
-                    <div>
-                        <Input
-                            id="comment"
-                            suffix={suffix}
-                            required
-                            style={{ maxWidth: '20rem' }}
-                            onPressEnter={handleComment}
-                            allowClear
+                        </div>
+                        <Rate
+                            value={userVote === undefined ? 0 : userVote.star}
+                            onChange={handleClickRate}
                         />
-                    </div>
-                    <Divider />
-                    {commentList.map((comment, index) => {
-                        if (comment.bookid === book.bookcode) {
-                            return (
-                                <Comment
-                                    comment={comment}
-                                    setCommentList={setCommentList}
-                                    key={index}
-                                />
-                            )
-                        }
-                    })}
-                </Col>
-            </Row>
+                        <div style={{ marginBottom: '0.5rem' }}>
+                            <Typography.Text>Bình luận</Typography.Text>
+                        </div>
+                        <div>
+                            <Input
+                                id="comment"
+                                suffix={suffix}
+                                required
+                                style={{ maxWidth: '20rem' }}
+                                onPressEnter={handleComment}
+                                allowClear
+                            />
+                        </div>
+                        <Divider />
+                        {commentList.map((comment, index) => {
+                            if (comment.bookid === book.bookcode) {
+                                return (
+                                    <Comment
+                                        comment={comment}
+                                        setCommentList={setCommentList}
+                                        key={index}
+                                    />
+                                )
+                            }
+                        })}
+                    </Col>
+                </Row>
+            </Skeleton>
         </>
     )
 }

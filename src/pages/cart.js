@@ -1,4 +1,4 @@
-import { Button, Space, Table, Modal, notification, Breadcrumb, Input } from "antd";
+import { Button, Space, Table, Modal, notification, Breadcrumb, Input, Skeleton } from "antd";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ExclamationCircleOutlined, ShoppingCartOutlined, HomeOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
@@ -6,6 +6,7 @@ import * as cartService from '../services/cartServices'
 
 const Cart = () => {
     const [bookList, setBookList] = useState([]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [modal, contextHolder] = Modal.useModal();
     const [api, apiContextHolder] = notification.useNotification();
@@ -14,6 +15,7 @@ const Cart = () => {
     const callApi = async () => {
         const data = await cartService.getUserCart(user.id);
         setBookList(data);
+        setLoading(false);
     }
     
     useEffect(() => {
@@ -194,16 +196,21 @@ const Cart = () => {
                     }
                 ]}
             />
-            <Table
-                rowKey={record => record.book_cartid}
-                columns={columns}
-                dataSource={bookList}
-                bordered
-                pagination={{
-                    hideOnSinglePage: true,
-                }}
-                scroll={{x: '100vw'}}
-            />
+            <Skeleton
+                loading={loading}
+                active
+            >
+                <Table
+                    rowKey={record => record.book_cartid}
+                    columns={columns}
+                    dataSource={bookList}
+                    bordered
+                    pagination={{
+                        hideOnSinglePage: true,
+                    }}
+                    scroll={{x: '100vw'}}
+                />
+            </Skeleton>
         </>
     )
 }

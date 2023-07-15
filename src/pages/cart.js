@@ -1,9 +1,10 @@
 import { Button, Space, Table, Modal, notification, Breadcrumb, Input, Skeleton } from "antd";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ExclamationCircleOutlined, ShoppingCartOutlined, HomeOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
 import * as cartService from '../services/cartServices';
 import * as orderService from '../services/orderService';
+import { AppContext } from "../context/appContext";
 
 const Cart = () => {
     const [bookList, setBookList] = useState([]);
@@ -12,6 +13,7 @@ const Cart = () => {
     const [modal, contextHolder] = Modal.useModal();
     const [api, apiContextHolder] = notification.useNotification();
     const user = JSON.parse(localStorage.getItem('user'));
+    const { fetchBook } = useContext(AppContext);
 
     const callApi = async () => {
         const data = await cartService.getUserCart(user.id);
@@ -99,6 +101,7 @@ const Cart = () => {
         const createOrder = async () => {
             await orderService.createOrder(newOrder);
             await cartService.deleteOrder(record.book_cartid);
+            await fetchBook();
             api["success"]({
                 message: "Thành công",
                 description: "Mua hàng thành công",

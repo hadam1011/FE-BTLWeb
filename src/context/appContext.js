@@ -8,15 +8,16 @@ export const AppProvider = ({ children }) => {
     const [disabled, setDisabled] = useState(true);
     const [bookList, setBookList] = useState([]);
 
+    const fetchBook = async () => {
+        const data = await bookService.getAllBook();
+        setBookList(data);
+    }
+
     useEffect(() => {
-        const fetchBook = async () => {
-            const data = await bookService.getAllBook();
-            setBookList(data);
-        }
         fetchBook();    
     }, [])
 
-    const props = {book, setBook, disabled, setDisabled, bookList, setBookList};
+    const props = {book, setBook, disabled, setDisabled, bookList, setBookList, fetchBook};
 
     return (
         <AppContext.Provider value={props} >

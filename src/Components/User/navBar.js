@@ -6,7 +6,8 @@ import {
     UserOutlined,
     ReadOutlined,
     SettingOutlined,
-    ExclamationCircleOutlined
+    ExclamationCircleOutlined,
+    HistoryOutlined
 } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -33,6 +34,11 @@ const NavBar = () => {
             label: 'Account',
             key: 'account',
             icon: <SettingOutlined />
+        },
+        {
+            label: 'History',
+            key: 'history',
+            icon: <HistoryOutlined />
         },
         {
             label: 'Logout',
@@ -73,6 +79,8 @@ const NavBar = () => {
               });
         } else if (item.key === 'account') {
             setIsOpen(true);
+        } else if (item.key === 'history') {
+            navigate('/history');
         }
     }
 

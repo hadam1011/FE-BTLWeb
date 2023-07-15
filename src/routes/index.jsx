@@ -10,6 +10,7 @@ import Accounts from "../pages/accounts";
 import PageNotFound from "../Components/Error/404";
 import NotAuthorPage from "../Components/Error/403";
 import Products from "../Components/User/products";
+import History from "../Components/User/history";
 
 const RouterPages = () => {
     return (
@@ -19,6 +20,7 @@ const RouterPages = () => {
                     <Route path="/book-detail/:bookcode" element={<BookDetail />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/products" element={<Products />} />
+                    <Route path="/history" element={<History /> } />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register /> } />

@@ -2,7 +2,8 @@ import { Button, Space, Table, Modal, notification, Breadcrumb, Input, Skeleton 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ExclamationCircleOutlined, ShoppingCartOutlined, HomeOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons"
-import * as cartService from '../services/cartServices'
+import * as cartService from '../services/cartServices';
+import * as orderService from '../services/orderService';
 
 const Cart = () => {
     const [bookList, setBookList] = useState([]);
@@ -21,6 +22,16 @@ const Cart = () => {
     useEffect(() => {
         callApi();
     }, [])
+
+    const handleDate = () => {
+        var now = new Date();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+        var currentDate = now.getFullYear() + "-" + month + "-" + day;
+        return currentDate;
+    }
 
     const handleConfirmCancel = (id) => {
         modal.confirm({
@@ -75,6 +86,25 @@ const Cart = () => {
     }
 
     const handleBuy = (record) => {
+        const newOrder = {
+            userid: record.userid,
+            bookid: record.bookid,
+            title: record.title,
+            price: record.price,
+            total: record.total,
+            quantity: record.quantity,
+            date: handleDate()
+        }
+
+        const createOrder = async () => {
+            await orderService.createOrder(newOrder);
+            await cartService.deleteOrder(record.book_cartid);
+            api["success"]({
+                message: "Thành công",
+                description: "Mua hàng thành công",
+            });
+        }
+        createOrder();
     }
 
     const handleView = (record) => {

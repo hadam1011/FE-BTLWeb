@@ -37,8 +37,8 @@ const Cart = () => {
 
     const handleConfirmCancel = (id) => {
         modal.confirm({
-            title: "Hủy đặt hàng",
-            content: "Bạn muốn hủy đơn hàng này?",
+            title: "Confirm",
+            content: "Cancel this order?",
             icon: <ExclamationCircleOutlined />,
             onOk: () => {
                 handleCancel(id)
@@ -51,8 +51,8 @@ const Cart = () => {
             await cartService.deleteOrder(id);
             await callApi();
             api["success"]({
-                message: "Thành công",
-                description: "Hủy đặt hàng thành công",
+                message: "Message",
+                description: "Order canceled successfully",
             });
         }
         fetchDelete();
@@ -78,8 +78,8 @@ const Cart = () => {
 
     const handleConfirmBuy = (record) => {
         modal.confirm({
-            title: "Xác nhận mua",
-            content: "Bạn muốn mua mặt hàng này?",
+            title: "Confirm",
+            content: "Add to cart?",
             icon: <ExclamationCircleOutlined />,
             onOk: () => {
                 handleBuy(record);
@@ -103,8 +103,8 @@ const Cart = () => {
             await cartService.deleteOrder(record.book_cartid);
             await fetchBook();
             api["success"]({
-                message: "Thành công",
-                description: "Mua hàng thành công",
+                message: "Message",
+                description: "Add to cart successfully",
             });
         }
         createOrder();
@@ -116,12 +116,12 @@ const Cart = () => {
 
     const columns = [
         {
-            title: "Tên sách",
+            title: "Title",
             dataIndex: "title",
             key: "title",
         },
         {
-            title: "Đơn giá",
+            title: "Price",
             dataIndex: "price",
             render: (_, record) => {
                 return (
@@ -132,7 +132,7 @@ const Cart = () => {
             },
         }, 
         {
-            title: "Số lượng",
+            title: "Quantity",
             dataIndex: "quantity",
             render: (_, record) => {
                 return (
@@ -156,7 +156,7 @@ const Cart = () => {
             },
         }, 
         {
-            title: "Thành tiền",
+            title: "Total",
             dataIndex: "total",
             render: (_, record) => {
                 return (

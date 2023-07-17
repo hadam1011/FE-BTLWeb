@@ -18,7 +18,7 @@ const History = () => {
         <>
             {listOrder.map((order) => {
                 return (
-                    <HistoryItem order={order} />
+                    <HistoryItem order={order} key={order.orderid}/>
                 )
             })}
         </>
